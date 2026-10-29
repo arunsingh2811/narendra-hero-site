@@ -2,7 +2,8 @@
 var S=window.SITE,M=window.MODELS,$=function(i){return document.getElementById(i)};
 function wa(t){return "https://wa.me/"+S.whatsapp+"?text="+encodeURIComponent(t||("Hello "+S.name+", I want to know about bikes."))}
 $("offer").textContent=S.offerBanner;$("offer").style.display=S.offerBanner?"block":"none";
-$("brand").innerHTML=S.name.replace(/^(\S+)\s(.*)$/,'$1 <span>$2</span>');
+if(S.heroLogo){var li=new Image();li.alt="Hero MotoCorp";li.src=S.heroLogo;li.className="logo";li.onerror=function(){li.remove()};$("hlogo").appendChild(li);var l2=li.cloneNode();$("flogo").appendChild(l2)}
+$("brand").textContent=S.name.split(" ").map(function(w){return w[0]}).join("").slice(0,3);
 $("h1").textContent=S.name;$("full").textContent=S.fullName;$("tag").textContent=S.tagline+" - "+S.city;
 $("waTop").href=wa();$("waUsed").href=wa("Hello, I want to know about used bikes available at "+S.name);
 $("barCall").href="tel:+91"+S.phone;$("barWa").href=wa();
