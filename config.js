@@ -15,5 +15,8 @@ window.SITE = {
   mapLink: "https://maps.app.goo.gl/HhYCo5MvJNi3K2tb6",   // "Get directions" button
   // Free key from https://web3forms.com (enter the email where you want enquiries). Leave empty to send enquiries only by WhatsApp.
   web3formsKey: "",
+  // Supabase (database + photos + staff login). These two are PUBLIC keys, safe to keep here.
+  supabaseUrl: "https://yejbxhrliiuuzbemsuia.supabase.co",
+  supabaseKey: "sb_publishable_IMcVOMAHb7XOOjS8djR-Ow_h3_DGHSb",
   offerBanner: "Festival offers running - ask for today's best price!"
 };
