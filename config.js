@@ -2,6 +2,8 @@
 window.SITE = {
   name: "Narendra Hero",
   fullName: "Narendra Automobiles",
+  // Official Hero MotoCorp logo file from your dealer portal. Upload it next to index.html, then set e.g. "hero-logo.png". Empty = no logo.
+  heroLogo: "hero-logo.png",
   tagline: "Authorised Dealer / Distributor - Hero MotoCorp",
   city: "Sitapur",
   phone: "9289922974",          // 10 digit, calls
