@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Narendra Hero - Narendra Automobiles, Authorised Hero MotoCorp Dealer, Sitapur</title>
+<meta name="description" content="Narendra Hero (Narendra Automobiles), authorised Hero MotoCorp dealer and distributor on Lucknow Road, Sitapur. See bikes and scooters, get best price, EMI and book a test ride.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="banner" id="offer"></div>
+<header><div class="wrap">
+  <a class="brand" href="#top" id="brand"></a>
+  <nav><a href="#models">Bikes</a><a href="#emi">EMI</a><a href="#used">Used Bikes</a><a href="#enquiry">Enquiry</a><a href="#contact">Contact</a></nav>
+  <a class="btn btn-red" href="#enquiry" style="padding:8px 14px">Get Best Price</a>
+</div></header>
+
+<div class="hero" id="top"><div class="wrap">
+  <h1 id="h1"></h1><div class="full" id="full"></div><p id="tag"></p>
+  <div class="btns"><a class="btn btn-red" href="#models">See Bikes</a><a class="btn btn-wa" id="waTop" target="_blank" rel="noopener">WhatsApp Us</a><a class="btn btn-line" href="#enquiry">Book Test Ride</a></div>
+</div></div>
+
+<section id="models"><div class="wrap">
+  <h2>Our Bikes and Scooters</h2><p class="sub">Tap "Get Best Price" on any model. We will call you back.</p>
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="grid"></div>
+</div></section>
+
+<section class="alt" id="emi"><div class="wrap two">
+  <div><h2>EMI Calculator</h2><p class="sub">Quick idea of your monthly instalment. Final EMI depends on the financier.</p></div>
+  <div class="box">
+    <label>Bike price (Rs)</label><input id="emiP" type="number" inputmode="numeric" value="80000">
+    <label>Down payment (Rs)</label><input id="emiD" type="number" inputmode="numeric" value="15000">
+    <label>Interest rate (% per year)</label><input id="emiR" type="number" step="0.1" value="12">
+    <label>Months</label><select id="emiN"><option>12</option><option>18</option><option selected>24</option><option>30</option><option>36</option></select>
+    <div class="emi-out" id="emiOut"></div>
+  </div>
+</div></section>
+
+<section id="used"><div class="wrap">
+  <h2>Used Bikes</h2><p class="sub">Checked second-hand bikes. Coming soon - call us to know what is available today.</p>
+  <a class="btn btn-wa" id="waUsed" target="_blank" rel="noopener">Ask about used bikes on WhatsApp</a>
+</div></section>
+
+<section class="alt" id="enquiry"><div class="wrap two">
+  <div><h2>Get Best Price / Book Test Ride</h2><p class="sub">Fill 3 details. Our team will call you.</p></div>
+  <form class="box" id="form" novalidate>
+    <input class="hp" type="text" name="botcheck" tabindex="-1" autocomplete="off">
+    <label>Your name *</label><input name="name" required maxlength="60">
+    <label>Mobile number *</label><input name="mobile" required inputmode="numeric" maxlength="10" placeholder="10 digit number">
+    <label>Interested in</label><select name="model" id="fModel"></select>
+    <label>I want to</label><select name="want"><option>Know best price</option><option>Book test ride</option><option>Know EMI / finance</option><option>Exchange my old bike</option></select>
+    <label>Village / City</label><input name="city" maxlength="60">
+    <button class="btn btn-red" style="width:100%;margin-top:14px" type="submit" id="send">Send Enquiry</button>
+    <div class="msg" id="msg"></div>
+  </form>
+</div></section>
+
+<section id="contact"><div class="wrap two">
+  <div><h2>Visit Us</h2><p id="addr"></p><p id="hrs"></p><p>Phone: <a id="telA"></a></p><p><a class="btn btn-red" id="dir" target="_blank" rel="noopener">Get Directions</a></p><p id="mailP">Email: <a id="mailA"></a></p></div>
+  <div id="mapBox"></div>
+</div></section>
+
+<footer><div class="wrap">&copy; <span id="yr"></span> <span id="fname"></span>. Prices and offers may change. Please confirm at the showroom.</div></footer>
+<div class="bar"><a class="c" id="barCall">Call Now</a><a class="w" id="barWa" target="_blank" rel="noopener">WhatsApp</a></div>
+
+<script src="config.js"></script><script src="models.js"></script><script src="app.js"></script>
+</body></html>
