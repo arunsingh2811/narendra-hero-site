@@ -186,8 +186,8 @@ function setPicked(n){picked=n||"";var p=$("picked");p.hidden=!picked;p.innerHTM
 $("picked").addEventListener("click",function(e){if(e.target.id==="unpick")setPicked("")});
 // ---- orange "Get Onroad Price" card: name + mobile + Save. The cross shows only after 5 seconds.
 var oTimer=null;
-function openOnroad(name){var p=$("opop"),x=$("ox");closeModal();p.hidden=false;x.hidden=true;$("omsg").textContent="";$("omsg").className="omsg";
-  $("obike").textContent=name||"";$("obike").hidden=!name;p.setAttribute("data-bike",name||"");$("oform").reset();
+function openOnroad(name,title){var p=$("opop"),x=$("ox");closeModal();p.hidden=false;x.hidden=true;$("omsg").textContent="";$("omsg").className="omsg";
+  $("obike").textContent=name||"";$("obike").hidden=!name;p.setAttribute("data-bike",name||"");p.setAttribute("data-title",title||"Get Onroad Price");$("otitle").textContent=T(title||"Get Onroad Price");$("oform").reset();
   clearTimeout(oTimer);oTimer=setTimeout(function(){x.hidden=false},5000);
   setTimeout(function(){try{$("oname").focus()}catch(e){}},50)}
 function closeOnroad(){clearTimeout(oTimer);$("opop").hidden=true}
@@ -196,27 +196,27 @@ $("oform").addEventListener("input",function(){var m=$("omsg");if(m.className.in
 $("opop").addEventListener("click",function(e){if(e.target===$("opop")&&!$("ox").hidden)closeOnroad()});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("opop").hidden&&!$("ox").hidden)closeOnroad()});
 $("oform").addEventListener("submit",function(ev){
-  ev.preventDefault();var f=ev.target,d={},model=$("opop").getAttribute("data-bike")||"";new FormData(f).forEach(function(v,k){d[k]=String(v).trim()});
+  ev.preventDefault();var f=ev.target,d={},model=$("opop").getAttribute("data-bike")||"",ptitle=$("opop").getAttribute("data-title")||"",wantT=ptitle==="Book Test Ride"?"Test ride":ptitle==="Get Best Price"?"Best price":"Onroad price";new FormData(f).forEach(function(v,k){d[k]=String(v).trim()});
   function om(t,ok){var m=$("omsg");m.textContent=T(t);m.className="omsg "+(ok?"ok":"err")}
   if(d.botcheck){return}
   if(!d.name||d.name.length<2){return om("Please enter your name.",0)}
   if(!/^[6-9]\d{9}$/.test(d.mobile)){return om("Please enter a valid 10 digit mobile number.",0)}
-  var text="Onroad price enquiry - "+S.name+"\nName: "+d.name+"\nMobile: "+d.mobile+(model?"\nModel: "+model:"")+"\nWants: Onroad price";
+  var text="Onroad price enquiry - "+S.name+"\nName: "+d.name+"\nMobile: "+d.mobile+(model?"\nModel: "+model:"")+"\nWants: "+wantT;
   function viaWa(){window.open(wa(text),"_blank");om("Opening WhatsApp. Please press Send there.",1);$("ox").hidden=false}
   if(!USE_DB&&!S.web3formsKey){return viaWa()}
   var b=$("osave");b.disabled=true;b.textContent=T("SAVING...");var jobs=[];
-  if(USE_DB){jobs.push(fetch(API+"/rest/v1/enquiries",{method:"POST",headers:{apikey:KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({name:d.name,mobile:d.mobile,model:model,want:"Best price / test ride",place:""})}).then(function(r){if(!r.ok)throw new Error("db")}))}
-  if(S.web3formsKey){jobs.push(fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({access_key:S.web3formsKey,subject:"Onroad price enquiry"+(model?" - "+model:""),from_name:S.name,name:d.name,mobile:d.mobile,model:model||"-",want:"Onroad price",place:"-"})}).then(function(r){return r.json()}).then(function(j){if(!j||!j.success)throw new Error("mail")}))}
+  if(USE_DB){jobs.push(fetch(API+"/rest/v1/enquiries",{method:"POST",headers:{apikey:KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({name:d.name,mobile:d.mobile,model:model,want:wantT,place:""})}).then(function(r){if(!r.ok)throw new Error("db")}))}
+  if(S.web3formsKey){jobs.push(fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({access_key:S.web3formsKey,subject:"Onroad price enquiry"+(model?" - "+model:""),from_name:S.name,name:d.name,mobile:d.mobile,model:model||"-",want:wantT,place:"-"})}).then(function(r){return r.json()}).then(function(j){if(!j||!j.success)throw new Error("mail")}))}
   Promise.all(jobs.map(function(p){return p.then(function(){return true},function(){return false})})).then(function(res){
     if(res.some(Boolean)){om("Thank you! Our team will call you with the onroad price soon.",1);f.reset();$("ox").hidden=false;setTimeout(closeOnroad,2800)}else{viaWa()}
     b.disabled=false;b.textContent=T("SAVE")})});
-[].forEach.call(document.querySelectorAll('header .btn-red,.hero .btns a[href="#enquiry"]'),function(el){el.addEventListener("click",function(e){e.preventDefault();openOnroad("")})});
+[].forEach.call(document.querySelectorAll('header .btn-red,.hero .btns a[href="#enquiry"]'),function(el){el.addEventListener("click",function(e){e.preventDefault();openOnroad("",el.getAttribute("data-pt")||"Get Best Price")})});
 function pick(name){closeModal();setPicked(name);$("enquiry").scrollIntoView({behavior:"smooth"})}
 function onGrid(e){var o=e.target.closest&&e.target.closest("[data-open]");if(o){var p=o.getAttribute("data-open").split(":");return openModal(p[0],+p[1])}var m=e.target.getAttribute&&e.target.getAttribute("data-m");if(m)pick(m);var op=e.target.getAttribute&&e.target.getAttribute("data-op");if(op)openOnroad(op)}
 $("grid").addEventListener("click",onGrid);$("usedGrid").addEventListener("click",onGrid);
 $("filters").addEventListener("click",function(e){var t=e.target.getAttribute("data-t");if(t){cur=t;drawFilters();drawGrid()}});
 BIKES=fallback();draw();drawUsed();load();
-window.NH_REDRAW=function(){draw();drawUsed();setPicked(picked);showVis();["omsg","sellMsg","msg"].forEach(function(i){var m=$(i);m.textContent="";if(m.className.indexOf("err")>=0)m.className=m.className.replace(" err","")})};
+window.NH_REDRAW=function(){$("otitle").textContent=T($("opop").getAttribute("data-title")||"Get Onroad Price");draw();drawUsed();setPicked(picked);showVis();["omsg","sellMsg","msg"].forEach(function(i){var m=$(i);m.textContent="";if(m.className.indexOf("err")>=0)m.className=m.className.replace(" err","")})};
 // ---- sell your bike (customer leaves details so we can call)
 (function(){
   var mk=$("makeList"),md=$("modelList"),f=$("sellForm");
