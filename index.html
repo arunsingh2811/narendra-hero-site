@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Narendra Hero - Narendra Automobiles, Authorised Hero MotoCorp Dealer, Sitapur</title>
 <meta name="description" content="Narendra Hero (Narendra Automobiles), authorised Hero MotoCorp dealer and distributor on Lucknow Road, Sitapur. See bikes and scooters, get onroad price, book a test ride, and buy or sell used bikes.">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="banner" id="offer"></div>
 <header><div class="wrap">
   <a class="brand2" href="#top" id="brand" title="Narendra Hero"><span id="brandLogo"></span><span class="bname" id="bname"></span></a>
-  <nav><a href="#models">Bikes</a><a href="#used">Used Bikes</a><a href="#sell">Sell Your Bike</a><a href="#enquiry">Enquiry</a><a href="#contact">Contact</a></nav>
-  <a class="btn btn-red" href="#enquiry" style="padding:8px 16px">Get Best Price</a>
+  <nav><a href="#models" data-i>Bikes</a><a href="#used" data-i>Used Bikes</a><a href="#sell" data-i>Sell Your Bike</a><a href="#enquiry" data-i>Enquiry</a><a href="#contact" data-i>Contact</a></nav>
+  <div class="hr"><button type="button" class="langbtn" id="lang" data-l="en"><span class="le">EN</span><span class="lh">हिं</span></button><a class="btn btn-red" href="#enquiry" style="padding:8px 16px" data-i>Get Best Price</a></div>
 </div></header>
 
 <div class="bn" id="bn" hidden><div class="slides" id="slides" aria-hidden="true"></div><div class="sdots" id="sdots"></div></div>
@@ -21,71 +21,71 @@
 <div class="hero" id="top"><div class="wrap">
   <h1 id="h1" class="sr"></h1>
   <div class="hl"><div class="full" id="full"></div>
-    <div class="tagrow"><p id="tag"></p><a class="ph" id="hphone"></a><a class="btn btn-sky" id="hcall">Call</a><a class="btn btn-sky" id="hwa" target="_blank" rel="noopener">WhatsApp</a></div></div>
-  <div class="btns"><a class="btn btn-red" href="#models">See Bikes</a><a class="btn btn-line" href="#enquiry">Book Test Ride</a></div>
+    <div class="tagrow"><p id="tag"></p><a class="ph" id="hphone"></a><a class="btn btn-sky" id="hcall" data-i>Call</a><a class="btn btn-sky" id="hwa" target="_blank" rel="noopener" data-i>WhatsApp</a></div></div>
+  <div class="btns"><a class="btn btn-red" href="#models" data-i>See Bikes</a><a class="btn btn-line" href="#enquiry" data-i>Book Test Ride</a></div>
 </div></div>
 
 <section id="models"><div class="wrap">
-  <h2>Our Bikes and Scooters</h2><p class="sub">Tap "Get Onroad Price" on any model. We will call you back.</p>
+  <h2 data-i>Our Bikes and Scooters</h2><p class="sub" data-i>Tap "Get Onroad Price" on any model. We will call you back.</p>
   <div class="filters" id="filters"></div>
   <div class="grid" id="grid"></div>
 </div></section>
 
 <section id="used"><div class="wrap">
-  <h2>Used Bikes</h2><p class="sub" id="usedSub">Checked second-hand bikes with sale price.</p>
+  <h2 data-i>Used Bikes</h2><p class="sub" id="usedSub">Checked second-hand bikes with sale price.</p>
   <div class="filters" id="usedFilters"></div>
   <div class="grid" id="usedGrid"></div>
-  <p class="ubtns"><a class="btn btn-wa" id="waUsed" target="_blank" rel="noopener">Ask about used bikes on WhatsApp</a> <a class="btn btn-red" href="#sell">Sell Your Bike</a></p>
+  <p class="ubtns"><a class="btn btn-wa" id="waUsed" target="_blank" rel="noopener" data-i>Ask about used bikes on WhatsApp</a> <a class="btn btn-red" href="#sell" data-i>Sell Your Bike</a></p>
 </div></section>
 
 <section class="alt" id="sell"><div class="wrap two">
-  <div><h2>Sell Your Bike</h2><p class="sub">Want to sell your old bike? Share a few details and our team will call you.</p></div>
+  <div><h2 data-i>Sell Your Bike</h2><p class="sub" data-i>Want to sell your old bike? Share a few details and our team will call you.</p></div>
   <form class="box" id="sellForm" novalidate>
     <input class="hp" type="text" name="botcheck" tabindex="-1" autocomplete="off">
-    <label>Your name *</label><input name="name" required maxlength="60">
-    <label>Mobile number *</label><input name="mobile" required inputmode="numeric" maxlength="10" placeholder="10 digit number">
-    <div class="fg2"><div><label>Bike make *</label><input name="make" list="makeList" maxlength="30" placeholder="Hero, Bajaj..." autocomplete="off"></div><div><label>Model *</label><input name="model" list="modelList" maxlength="40" placeholder="Splendor, Platina..." autocomplete="off"></div></div>
-    <div class="fg2 keep"><div><label>Year</label><input name="year" inputmode="numeric" maxlength="4" placeholder="2020"></div><div><label>Run (km)</label><input name="km" inputmode="numeric" maxlength="8" placeholder="25000"></div></div>
-    <label>Price you expect (Rs)</label><input name="price" inputmode="numeric" maxlength="9" placeholder="Optional">
-    <label>Village / City</label><input name="place" maxlength="60">
-    <button class="btn btn-red" style="width:100%;margin-top:14px" type="submit" id="sellSend">Send Details</button>
+    <label data-i>Your name *</label><input name="name" required maxlength="60">
+    <label data-i>Mobile number *</label><input name="mobile" required inputmode="numeric" maxlength="10" placeholder="10 digit number" data-ip>
+    <div class="fg2"><div><label data-i>Bike make *</label><input name="make" list="makeList" maxlength="30" placeholder="Hero, Bajaj..." data-ip autocomplete="off"></div><div><label data-i>Model *</label><input name="model" list="modelList" maxlength="40" placeholder="Splendor, Platina..." data-ip autocomplete="off"></div></div>
+    <div class="fg2 keep"><div><label data-i>Year</label><input name="year" inputmode="numeric" maxlength="4" placeholder="2020"></div><div><label data-i>Run (km)</label><input name="km" inputmode="numeric" maxlength="8" placeholder="25000"></div></div>
+    <label data-i>Price you expect (Rs)</label><input name="price" inputmode="numeric" maxlength="9" placeholder="Optional" data-ip>
+    <label data-i>Village / City</label><input name="place" maxlength="60">
+    <button class="btn btn-red" style="width:100%;margin-top:14px" type="submit" id="sellSend" data-i>Send Details</button>
     <div class="msg" id="sellMsg"></div>
     <datalist id="makeList"></datalist><datalist id="modelList"></datalist>
   </form>
 </div></section>
 
 <section id="enquiry"><div class="wrap two">
-  <div><h2>Get Best Price / Book Test Ride</h2><p class="sub">Fill 2 details. Our team will call you.</p></div>
+  <div><h2 data-i>Get Best Price / Book Test Ride</h2><p class="sub" data-i>Fill 2 details. Our team will call you.</p></div>
   <form class="box" id="form" novalidate>
     <input class="hp" type="text" name="botcheck" tabindex="-1" autocomplete="off">
-    <label>Your name *</label><input name="name" required maxlength="60">
-    <label>Mobile number *</label><input name="mobile" required inputmode="numeric" maxlength="10" placeholder="10 digit number">
+    <label data-i>Your name *</label><input name="name" required maxlength="60">
+    <label data-i>Mobile number *</label><input name="mobile" required inputmode="numeric" maxlength="10" placeholder="10 digit number" data-ip>
     <div class="picked" id="picked" hidden></div>
-    <button class="btn btn-red" style="width:100%;margin-top:14px" type="submit" id="send">Send Enquiry</button>
+    <button class="btn btn-red" style="width:100%;margin-top:14px" type="submit" id="send" data-i>Send Enquiry</button>
     <div class="msg" id="msg"></div>
   </form>
 </div></section>
 
 <section class="alt" id="contact"><div class="wrap two">
-  <div><h2>Visit Us</h2><p id="addr"></p><p id="hrs"></p><p>Phone: <a id="telA"></a></p><p><a class="btn btn-red" id="dir" target="_blank" rel="noopener">Get Directions</a></p><p id="mailP">Email: <a id="mailA"></a></p></div>
+  <div><h2 data-i>Visit Us</h2><p id="addr"></p><p id="hrs"></p><p><span data-i>Phone:</span> <a id="telA"></a></p><p><a class="btn btn-red" id="dir" target="_blank" rel="noopener" data-i>Get Directions</a></p><p id="mailP"><span data-i>Email:</span> <a id="mailA"></a></p></div>
   <div id="mapBox"></div>
 </div></section>
 
-<footer><div class="wrap"><div id="flogo"></div>&copy; <span id="yr"></span> <span id="fname"></span>. Prices and offers may change. Please confirm at the showroom.<div class="vis" id="vis" hidden></div></div></footer>
-<div class="bar"><a class="c" id="barCall">Call Now</a><a class="w" id="barWa" target="_blank" rel="noopener">WhatsApp</a></div>
+<footer><div class="wrap"><div id="flogo"></div>&copy; <span id="yr"></span> <span id="fname"></span>. <span data-i>Prices and offers may change. Please confirm at the showroom.</span><div class="vis" id="vis" hidden></div></div></footer>
+<div class="bar"><a class="c" id="barCall" data-i>Call Now</a><a class="w" id="barWa" target="_blank" rel="noopener" data-i>WhatsApp</a></div>
 
 <div class="opop" id="opop" hidden><div class="ocard" role="dialog" aria-modal="true" aria-labelledby="otitle">
   <button type="button" class="ox" id="ox" aria-label="Close" hidden>&times;</button>
-  <h3 id="otitle">Get Onroad Price</h3><p class="obike" id="obike"></p>
+  <h3 id="otitle" data-i>Get Onroad Price</h3><p class="obike" id="obike"></p>
   <form id="oform" novalidate>
-    <input name="name" id="oname" placeholder="Your name" autocomplete="name" maxlength="60">
-    <input name="mobile" placeholder="Mobile number (10 digits)" inputmode="numeric" maxlength="10" autocomplete="tel">
+    <input name="name" id="oname" placeholder="Your name" data-ip autocomplete="name" maxlength="60">
+    <input name="mobile" placeholder="Mobile number (10 digits)" data-ip inputmode="numeric" maxlength="10" autocomplete="tel">
     <input class="hp" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
     <div class="omsg" id="omsg" aria-live="polite"></div>
-    <button class="osave" id="osave" type="submit">SAVE</button>
+    <button class="osave" id="osave" type="submit" data-i>SAVE</button>
   </form>
 </div></div>
 
 <div class="modal" id="modal" hidden><div class="mbox"><button class="mclose" id="mclose" type="button" aria-label="Close">&times;</button><div id="mbody"></div></div></div>
-<script src="config.js"></script><script src="lists.js"></script><script src="models.js"></script><script src="app.js"></script>
+<script src="config.js"></script><script src="lang.js"></script><script src="lists.js"></script><script src="models.js"></script><script src="app.js"></script>
 </body></html>
