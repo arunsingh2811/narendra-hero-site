@@ -145,7 +145,7 @@ function banners(pane){
       var files=[].slice.call(e.target.files);e.target.value="";if(!files.length)return;
       if(rows.length+files.length>BANMAX){return msg("Only "+BANMAX+" banner photos are allowed. You have "+rows.length+". Delete some first.")}
       var top=rows.reduce(function(m,r){return Math.max(m,r.sort||0)},0),chain=Promise.resolve(),done=0;
-      files.forEach(function(f,i){chain=chain.then(function(){msg("Uploading photo "+(i+1)+" of "+files.length+"...",1);return shrink(f,1600)}).then(function(o){return upload(o.blob,"banners/"+uid()+".jpg")}).then(function(u){return rest("POST","banners",{image_url:u,sort:top+10*(i+1)})}).then(function(){done++})});
+      files.forEach(function(f,i){chain=chain.then(function(){msg("Uploading photo "+(i+1)+" of "+files.length+"...",1);return shrink(f,1600)}).then(function(o){return upload(o,"banners/"+uid()+".jpg")}).then(function(u){return rest("POST","banners",{image_url:u,sort:top+10*(i+1)})}).then(function(){done++})});
       chain.then(function(){toast(done+" photo(s) added");go("ban")}).catch(function(er){msg((done?done+" added. ":"")+er.message);if(done)setTimeout(function(){go("ban")},2500)})};
     $("#bl").onclick=function(e){var a=e.target.getAttribute("data-a");if(!a)return;var i=+e.target.getAttribute("data-i"),r=rows[i],job;
       if(a==="hide")job=rest("PATCH","banners?id=eq."+r.id,{active:!r.active});
