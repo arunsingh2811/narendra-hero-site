@@ -8,8 +8,8 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return
 function wa(t){return "https://wa.me/"+S.whatsapp+"?text="+encodeURIComponent(t||("Hello "+S.name+", I want to know about bikes."))}
 // ---- static parts
 $("offer").textContent=S.offerBanner;$("offer").style.display=S.offerBanner?"block":"none";
-if(S.heroLogo){var li=new Image();li.alt="Hero MotoCorp";li.src=S.heroLogo;li.className="logo";li.onerror=function(){li.remove()};$("hlogo").appendChild(li);var l2=li.cloneNode();l2.draggable=false;$("flogo").appendChild(l2)}
-$("brand").textContent=S.name.split(" ").map(function(w){return w[0]}).join("").slice(0,3);
+if(S.heroLogo){var li=new Image();li.alt="Hero MotoCorp";li.src=S.heroLogo;li.className="logo";li.onerror=function(){li.remove()};$("brandLogo").appendChild(li);var l2=li.cloneNode();l2.draggable=false;$("flogo").appendChild(l2)}
+$("bname").textContent=S.name;
 $("h1").textContent=S.name;$("full").textContent=S.fullName;$("tag").textContent=S.tagline+" - "+S.city;
 $("hphone").textContent=S.phone;$("hphone").href="tel:+91"+S.phone;$("hcall").href="tel:+91"+S.phone;$("hwa").href=wa();$("waUsed").href=wa("Hello, I want to know about used bikes available at "+S.name);
 $("barCall").href="tel:+91"+S.phone;$("barWa").href=wa();
@@ -65,8 +65,9 @@ function load(){
 // ---- home page banner slideshow (photos are added in Admin > Banners)
 function setBanners(rows){
   var urls=(rows||[]).map(function(r){return r.image_url}).filter(Boolean);if(!urls.length)return;
-  var box=$("slides"),hero=$("top"),dots=$("sdots");
-  box.innerHTML=urls.map(function(){return '<div class="slide"></div>'}).join("");hero.className+=" has-slides";
+  var box=$("slides"),hero=$("bn"),dots=$("sdots");
+  box.innerHTML=urls.map(function(){return '<div class="slide"></div>'}).join("");hero.hidden=false;
+  var pm=new Image();pm.onload=function(){if(pm.naturalWidth&&pm.naturalHeight)hero.style.aspectRatio=Math.min(4.2,Math.max(2.2,pm.naturalWidth/pm.naturalHeight))+" / 1"};pm.src=urls[0];
   var sl=[].slice.call(box.children),cur=0,timer=null;
   function loadAt(i){if(!sl[i].style.backgroundImage)sl[i].style.backgroundImage="url('"+urls[i].replace(/'/g,"%27")+"')"}
   function show(i){cur=(i+sl.length)%sl.length;loadAt(cur);sl.forEach(function(e,k){e.classList.toggle("on",k===cur)});[].forEach.call(dots.children,function(e,k){e.classList.toggle("on",k===cur)});
