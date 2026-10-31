@@ -10,6 +10,8 @@
 body{padding-bottom:0;background:var(--soft)}
 .top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}.top .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:10px}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+@media(max-width:600px){#who{display:none}.top b{white-space:nowrap}}
+.vstat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}.vstat[hidden]{display:none}.vstat div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px}.vstat b{display:block;font-size:22px;line-height:1.2}.vstat small{color:var(--mut);font-size:12px}
 .row{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;display:flex;gap:12px;align-items:center;margin-bottom:10px}
 .row .th{width:72px;height:56px;border-radius:8px;background:var(--soft);object-fit:cover;flex:none;display:flex;align-items:center;justify-content:center;font-size:10px;color:#aaa}
 .row .info{flex:1;min-width:0}.row .info b{display:block}.row .info small{color:var(--mut)}
@@ -21,9 +23,13 @@ body{padding-bottom:0;background:var(--soft)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);top:14px;background:#111;color:#fff;padding:10px 16px;border-radius:10px;z-index:99;font-size:14px;max-width:90vw}.toast.bad{background:#b00020}
 .login{max-width:380px;margin:60px auto}.hint{color:var(--mut);font-size:13px}
 .note{width:100%;margin-top:6px;padding:8px;font-size:13px}
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:14px}
+.bc{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}.bc.hid{opacity:.55}
+.bc img{width:100%;aspect-ratio:16/7;object-fit:cover;display:block;background:var(--soft)}
+.bc .b{padding:10px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}.bc .b b{margin-right:auto}
 </style>
 </head>
 <body>
 <div id="app"></div>
-<script src="config.js"></script><script src="admin.js"></script>
+<script src="config.js"></script><script src="lists.js"></script><script src="admin.js"></script>
 </body></html>

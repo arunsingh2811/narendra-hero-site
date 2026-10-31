@@ -4,21 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Narendra Hero - Narendra Automobiles, Authorised Hero MotoCorp Dealer, Sitapur</title>
-<meta name="description" content="Narendra Hero (Narendra Automobiles), authorised Hero MotoCorp dealer and distributor on Lucknow Road, Sitapur. See bikes and scooters, get best price, EMI and book a test ride.">
+<meta name="description" content="Narendra Hero (Narendra Automobiles), authorised Hero MotoCorp dealer and distributor on Lucknow Road, Sitapur. See bikes and scooters, get best price, EMI, book a test ride, and buy or sell used bikes.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="banner" id="offer"></div>
 <header><div class="wrap">
   <a class="brand" href="#top" id="brand" title="Narendra Hero"></a>
-  <nav><a href="#models">Bikes</a><a href="#emi">EMI</a><a href="#used">Used Bikes</a><a href="#enquiry">Enquiry</a><a href="#contact">Contact</a></nav>
+  <nav><a href="#models">Bikes</a><a href="#emi">EMI</a><a href="#used">Used Bikes</a><a href="#sell">Sell Your Bike</a><a href="#enquiry">Enquiry</a><a href="#contact">Contact</a></nav>
   <a class="btn btn-red" href="#enquiry" style="padding:8px 16px">Get Best Price</a>
 </div></header>
 
-<div class="hero" id="top"><div class="wrap">
-  <div id="hlogo"></div><h1 id="h1"></h1><div class="full" id="full"></div><p id="tag"></p>
-  <div class="btns"><a class="btn btn-red" href="#models">See Bikes</a><a class="btn btn-wa" id="waTop" target="_blank" rel="noopener">WhatsApp Us</a><a class="btn btn-line" href="#enquiry">Book Test Ride</a></div>
-</div></div>
+<div class="hero" id="top"><div class="slides" id="slides" aria-hidden="true"></div><div class="wrap">
+  <div id="hlogo"></div><h1 id="h1"></h1><div class="full" id="full"></div>
+  <div class="tagrow"><p id="tag"></p><a class="ph" id="hphone"></a><a class="btn btn-sky" id="hcall">Call</a><a class="btn btn-sky" id="hwa" target="_blank" rel="noopener">WhatsApp</a></div>
+  <div class="btns"><a class="btn btn-red" href="#models">See Bikes</a><a class="btn btn-line" href="#enquiry">Book Test Ride</a></div>
+</div><div class="sdots" id="sdots"></div></div>
 
 <section id="models"><div class="wrap">
   <h2>Our Bikes and Scooters</h2><p class="sub">Tap "Get Best Price" on any model. We will call you back.</p>
@@ -38,33 +39,48 @@
 </div></section>
 
 <section id="used"><div class="wrap">
-  <h2>Used Bikes</h2><p class="sub" id="usedSub">Checked second-hand bikes with offer price.</p>
+  <h2>Used Bikes</h2><p class="sub" id="usedSub">Checked second-hand bikes with sale price.</p>
+  <div class="filters" id="usedFilters"></div>
   <div class="grid" id="usedGrid"></div>
-  <p style="margin-top:16px"><a class="btn btn-wa" id="waUsed" target="_blank" rel="noopener">Ask about used bikes on WhatsApp</a></p>
+  <p class="ubtns"><a class="btn btn-wa" id="waUsed" target="_blank" rel="noopener">Ask about used bikes on WhatsApp</a> <a class="btn btn-red" href="#sell">Sell Your Bike</a></p>
 </div></section>
 
-<section class="alt" id="enquiry"><div class="wrap two">
-  <div><h2>Get Best Price / Book Test Ride</h2><p class="sub">Fill 3 details. Our team will call you.</p></div>
+<section class="alt" id="sell"><div class="wrap two">
+  <div><h2>Sell Your Bike</h2><p class="sub">Want to sell your old bike? Share a few details and our team will call you.</p></div>
+  <form class="box" id="sellForm" novalidate>
+    <input class="hp" type="text" name="botcheck" tabindex="-1" autocomplete="off">
+    <label>Your name *</label><input name="name" required maxlength="60">
+    <label>Mobile number *</label><input name="mobile" required inputmode="numeric" maxlength="10" placeholder="10 digit number">
+    <div class="fg2"><div><label>Bike make *</label><input name="make" list="makeList" maxlength="30" placeholder="Hero, Bajaj..." autocomplete="off"></div><div><label>Model *</label><input name="model" list="modelList" maxlength="40" placeholder="Splendor, Platina..." autocomplete="off"></div></div>
+    <div class="fg2 keep"><div><label>Year</label><input name="year" inputmode="numeric" maxlength="4" placeholder="2020"></div><div><label>Run (km)</label><input name="km" inputmode="numeric" maxlength="8" placeholder="25000"></div></div>
+    <label>Price you expect (Rs)</label><input name="price" inputmode="numeric" maxlength="9" placeholder="Optional">
+    <label>Village / City</label><input name="place" maxlength="60">
+    <button class="btn btn-red" style="width:100%;margin-top:14px" type="submit" id="sellSend">Send Details</button>
+    <div class="msg" id="sellMsg"></div>
+    <datalist id="makeList"></datalist><datalist id="modelList"></datalist>
+  </form>
+</div></section>
+
+<section id="enquiry"><div class="wrap two">
+  <div><h2>Get Best Price / Book Test Ride</h2><p class="sub">Fill 2 details. Our team will call you.</p></div>
   <form class="box" id="form" novalidate>
     <input class="hp" type="text" name="botcheck" tabindex="-1" autocomplete="off">
     <label>Your name *</label><input name="name" required maxlength="60">
     <label>Mobile number *</label><input name="mobile" required inputmode="numeric" maxlength="10" placeholder="10 digit number">
-    <label>Interested in</label><select name="model" id="fModel"></select>
-    <label>I want to</label><select name="want"><option>Know best price</option><option>Book test ride</option><option>Know EMI / finance</option><option>Exchange my old bike</option></select>
-    <label>Village / City</label><input name="city" maxlength="60">
+    <div class="picked" id="picked" hidden></div>
     <button class="btn btn-red" style="width:100%;margin-top:14px" type="submit" id="send">Send Enquiry</button>
     <div class="msg" id="msg"></div>
   </form>
 </div></section>
 
-<section id="contact"><div class="wrap two">
+<section class="alt" id="contact"><div class="wrap two">
   <div><h2>Visit Us</h2><p id="addr"></p><p id="hrs"></p><p>Phone: <a id="telA"></a></p><p><a class="btn btn-red" id="dir" target="_blank" rel="noopener">Get Directions</a></p><p id="mailP">Email: <a id="mailA"></a></p></div>
   <div id="mapBox"></div>
 </div></section>
 
-<footer><div class="wrap"><div id="flogo"></div>&copy; <span id="yr"></span> <span id="fname"></span>. Prices and offers may change. Please confirm at the showroom.</div></footer>
+<footer><div class="wrap"><div id="flogo"></div>&copy; <span id="yr"></span> <span id="fname"></span>. Prices and offers may change. Please confirm at the showroom.<div class="vis" id="vis" hidden></div></div></footer>
 <div class="bar"><a class="c" id="barCall">Call Now</a><a class="w" id="barWa" target="_blank" rel="noopener">WhatsApp</a></div>
 
 <div class="modal" id="modal" hidden><div class="mbox"><button class="mclose" id="mclose" type="button" aria-label="Close">&times;</button><div id="mbody"></div></div></div>
-<script src="config.js"></script><script src="models.js"></script><script src="app.js"></script>
+<script src="config.js"></script><script src="lists.js"></script><script src="models.js"></script><script src="app.js"></script>
 </body></html>
