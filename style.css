@@ -99,3 +99,16 @@ iframe{width:100%;height:280px;border:0;border-radius:16px;filter:grayscale(1)}
 .bcard.used .lants{filter:hue-rotate(205deg) saturate(.75)}
 .utag{position:absolute;left:0;top:0;background:#245a9e;color:#fff;font-weight:700;font-size:13px;letter-spacing:.8px;padding:4px 12px}
 .bcard.used .specs{min-height:90px}
+
+/* ---- orange "Get Onroad Price" card (name + mobile + Save). The little cross at the top left shows after 5 seconds. */
+.opop{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:70;display:flex;align-items:center;justify-content:center;padding:16px}.opop[hidden]{display:none}
+.ocard{position:relative;width:min(100%,380px);background:linear-gradient(180deg,#f46a35 0%,#e5481b 100%);color:#fff;padding:40px 22px 22px;clip-path:polygon(0 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%);box-shadow:0 10px 40px rgba(0,0,0,.35);font-family:"Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif}
+.ocard h3{margin:0 0 4px;font-size:26px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.ocard .obike{margin:0 0 16px;font-size:18px;opacity:.95}.ocard .obike[hidden]{display:none}
+.ocard input{background:#fff;color:#111;border:0;border-radius:6px;margin:0 0 10px;padding:14px 12px;font-size:16px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.ocard input.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;padding:0;margin:0}
+.ocard input:focus{outline:3px solid #ffd2bf}
+.omsg{min-height:20px;font-size:15px;margin:0 0 8px}.omsg.err{color:#fff;background:rgba(0,0,0,.28);padding:6px 10px;border-radius:6px}.omsg.ok{background:rgba(255,255,255,.22);padding:6px 10px;border-radius:6px}.omsg:empty{padding:0;background:none}
+.osave{width:100%;border:0;border-radius:6px;background:#161616;color:#fff;font:700 20px "Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif;letter-spacing:.6px;padding:14px;cursor:pointer}.osave:disabled{opacity:.6}.osave:hover:not(:disabled){background:#000}
+.ox{position:absolute;left:8px;top:6px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(255,255,255,.28);color:#fff;font-size:19px;line-height:1;cursor:pointer;padding:0;animation:oxin .4s ease}.ox[hidden]{display:none}
+@keyframes oxin{from{opacity:0}to{opacity:1}}

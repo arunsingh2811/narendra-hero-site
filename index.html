@@ -82,6 +82,18 @@
 <footer><div class="wrap"><div id="flogo"></div>&copy; <span id="yr"></span> <span id="fname"></span>. Prices and offers may change. Please confirm at the showroom.<div class="vis" id="vis" hidden></div></div></footer>
 <div class="bar"><a class="c" id="barCall">Call Now</a><a class="w" id="barWa" target="_blank" rel="noopener">WhatsApp</a></div>
 
+<div class="opop" id="opop" hidden><div class="ocard" role="dialog" aria-modal="true" aria-labelledby="otitle">
+  <button type="button" class="ox" id="ox" aria-label="Close" hidden>&times;</button>
+  <h3 id="otitle">Get Onroad Price</h3><p class="obike" id="obike"></p>
+  <form id="oform" novalidate>
+    <input name="name" id="oname" placeholder="Your name" autocomplete="name" maxlength="60">
+    <input name="mobile" placeholder="Mobile number (10 digits)" inputmode="numeric" maxlength="10" autocomplete="tel">
+    <input class="hp" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="omsg" id="omsg" aria-live="polite"></div>
+    <button class="osave" id="osave" type="submit">SAVE</button>
+  </form>
+</div></div>
+
 <div class="modal" id="modal" hidden><div class="mbox"><button class="mclose" id="mclose" type="button" aria-label="Close">&times;</button><div id="mbody"></div></div></div>
 <script src="config.js"></script><script src="lists.js"></script><script src="models.js"></script><script src="app.js"></script>
 </body></html>
