@@ -102,9 +102,11 @@ function usedMake(m){return m.make||String(m.title||"").split(" ")[0]||""}
 function usedTags(m){var t=[];if(m.year)t.push(String(m.year));if(m.km!=null&&m.km!=="")t.push(Number(m.km).toLocaleString("en-IN")+" km");if(m.warranty)t.push("Warranty: "+m.warranty);if(m.owner)t.push(m.owner);if(m.colour)t.push(m.colour);return t}
 function drawUsedFilters(){var t=["All"];USED.forEach(function(b){var k=usedMake(b);if(k&&t.indexOf(k)<0)t.push(k)});if(t.indexOf(curMake)<0)curMake="All";
   var h="";t.forEach(function(x){h+='<button type="button" class="chip'+(x===curMake?' on':'')+'" data-um="'+esc(x)+'">'+esc(x)+'</button>'});$("usedFilters").innerHTML=t.length>2?h:""}
-function drawUsed(){drawUsedFilters();var h="";USED.forEach(function(m,i){if(curMake!=="All"&&usedMake(m)!==curMake)return;
-  var t=usedTags(m).map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join(""),pr=usedPrice(m);
-  h+='<div class="card"><div class="img" data-open="u:'+i+'">'+imgTag(m)+badge(m)+'</div><div class="b"><h3>'+esc(m.title)+'</h3><div class="tags">'+t+'</div><div class="price">'+(pr?'Sale price '+esc(pr):'Call for price')+'</div><a class="btn btn-red" target="_blank" rel="noopener" href="'+esc(wa("Hello, I am interested in the used bike: "+m.title+(pr?" ("+pr+")":"")))+'">Enquire on WhatsApp</a></div></div>'});
+function usedSpecs(m){var a=[];if(m.year)a.push("Model Year "+m.year);if(m.km!=null&&m.km!=="")a.push(Number(m.km).toLocaleString("en-IN")+" km Driven");if(m.warranty)a.push("Warranty: "+m.warranty);if(m.owner)a.push(m.owner);if(m.colour)a.push("Colour: "+m.colour);return a.slice(0,4)}
+function drawUsed(){drawUsedFilters();var h="",city=String(S.city||"").toUpperCase();USED.forEach(function(m,i){if(curMake!=="All"&&usedMake(m)!==curMake)return;
+  var sp=usedSpecs(m).map(function(x){return "<li>"+esc(x)+"</li>"}).join(""),pr=rupee(usedPrice(m));
+  var pb='<div class="p1 only">'+(pr?'<b>'+esc(pr)+'</b><small>Sale Price'+(city?", "+esc(city):"")+'</small>':'<b class="cp">Call for price</b>')+'</div>';
+  h+='<div class="bcard used"><div class="bin">'+LANT+'<span class="utag">USED</span><div class="bimg" data-open="u:'+i+'">'+imgTag(m)+badge(m)+'</div><h3>'+esc(m.title)+'</h3><ul class="specs">'+sp+'</ul><div class="prow">'+pb+'</div><a class="deal" target="_blank" rel="noopener" href="'+esc(wa("Hello, I am interested in the used bike: "+m.title+(pr?" ("+pr+")":"")))+'">ENQUIRE ON WHATSAPP</a></div></div>'});
   $("usedGrid").innerHTML=h;$("usedSub").textContent=USED.length?"Checked second-hand bikes with sale price. Tap a photo to see more.":"No used bike listed right now. Call or WhatsApp us to know what is coming."}
 $("usedFilters").addEventListener("click",function(e){var t=e.target.getAttribute("data-um");if(t){curMake=t;drawUsed()}});
 // ---- detail popup
