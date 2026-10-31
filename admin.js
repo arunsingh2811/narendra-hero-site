@@ -67,7 +67,7 @@ function go(t){tab=t;
   counts()}
 // ---------- generic list + form
 var BIKES={table:"bikes",order:"sort.asc,name.asc",label:"bike",add:"+ Add new bike",titleKey:"name",
- fields:[{k:"name",l:"Bike name *",req:1,ph:"Splendor+ i3s"},{k:"type",l:"Type",t:"select",o:["Motorcycle","Scooter"]},{k:"cc",l:"Engine (cc)",t:"number"},{k:"price",l:"Ex-showroom price",ph:"Rs 76,000"},{k:"mileage",l:"Mileage",ph:"65 kmpl"},{k:"colours",l:"Colours",ph:"Black, Red, Blue"},{k:"note",l:"One line about the bike",full:1},{k:"description",l:"Details (optional)",t:"textarea",full:1},{k:"sort",l:"Order number (small = first)",t:"number",d:100},{k:"active",l:"Show on website",t:"check",d:true}],
+ fields:[{k:"name",l:"Bike name *",req:1,ph:"Splendor+ i3s"},{k:"type",l:"Type",t:"select",o:["Motorcycle","Scooter"]},{k:"cc",l:"Engine (cc)",t:"number"},{k:"price",l:"Ex-showroom price",ph:"Rs 76,000"},{k:"mileage",l:"Mileage",ph:"65 kmpl"},{k:"colours",l:"Colours",ph:"Black, Red, Blue"},{k:"note",l:"One line about the bike",full:1},{k:"specs",l:"Key points on the card (one per line, best 4)",t:"textarea",full:1,ph:"124.6cc Engine Displacement\nMax Power 9 BHP @ 7000 rpm\n5.3 L Fuel Tank\nAuto-Cancel Winkers"},{k:"offer_price",l:"Offer price (shown big)",ph:"Rs 80,715"},{k:"offer_till",l:"Offer valid till",t:"date"},{k:"description",l:"Details (optional)",t:"textarea",full:1},{k:"sort",l:"Order number (small = first)",t:"number",d:100},{k:"active",l:"Show on website",t:"check",d:true}],
  sub:function(r){return [r.type,r.cc?r.cc+" cc":"",r.price||"no price"].filter(Boolean).join(" | ")},
  flag:function(r){return r.active?"":'<span class="chipx off">Hidden</span>'},
  toggle:function(r){return r.active?{l:"Hide",p:{active:false}}:{l:"Show",p:{active:true}}}};
@@ -96,7 +96,7 @@ function form(C,row,done){
   var MINP=C.minPhotos||0,MAXP=C.maxPhotos||0;
   function fld(f){var v=row?row[f.k]:f.d;if((v==null||v==="")&&row&&f.pre)v=f.pre(row);if(v==null)v="";var id="f_"+f.k,w=f.full?' style="grid-column:1/-1"':"";
     if(f.t==="check")return '<div class="fld"'+w+'><label><input type="checkbox" id="'+id+'" '+(v?"checked":"")+' style="width:auto"> '+f.l+'</label></div>';
-    var inp=f.t==="select"?'<select id="'+id+'">'+f.o.map(function(o){return '<option value="'+esc(o)+'"'+(o===v?" selected":"")+'>'+esc(o||"-")+'</option>'}).join("")+'</select>':f.t==="textarea"?'<textarea id="'+id+'" rows="3">'+esc(v)+'</textarea>':'<input id="'+id+'" type="'+(f.t==="number"?"number":"text")+'"'+(f.t==="number"?' inputmode="numeric" min="0"':'')+(f.list?' list="dl'+f.list+'" autocomplete="off"':'')+' value="'+esc(v)+'" placeholder="'+esc(f.ph||"")+'">';
+    var inp=f.t==="select"?'<select id="'+id+'">'+f.o.map(function(o){return '<option value="'+esc(o)+'"'+(o===v?" selected":"")+'>'+esc(o||"-")+'</option>'}).join("")+'</select>':f.t==="textarea"?'<textarea id="'+id+'" rows="3">'+esc(v)+'</textarea>':'<input id="'+id+'" type="'+(f.t==="number"?"number":f.t==="date"?"date":"text")+'"'+(f.t==="number"?' inputmode="numeric" min="0"':'')+(f.list?' list="dl'+f.list+'" autocomplete="off"':'')+' value="'+esc(v)+'" placeholder="'+esc(f.ph||"")+'">';
     return '<div class="fld"'+w+'><label>'+f.l+'</label>'+inp+'</div>'}
   ov.innerHTML='<div class="mbox"><button class="mclose" type="button" id="x">&times;</button><h3 style="margin-top:0">'+(row?"Edit ":"Add ")+C.label+'</h3><div class="grid2">'+C.fields.map(fld).join("")+'</div><label>Photos '+(MAXP?'('+(MINP||0)+' to '+MAXP+') ':'')+'- first photo is the main one <span class="hint" id="pc"></span></label><div class="photos" id="ph"></div><input type="file" id="fi" accept="image/*" multiple><datalist id="dlMake"></datalist><datalist id="dlModel"></datalist><datalist id="dlWarranty"></datalist><p class="hint">Phone se seedha photo le sakte ho. Photo apne aap chhoti ho jati hai.</p><div class="mbtns"><button class="btn btn-red" id="sv" type="button">Save</button><button class="btn btn-line" id="cn" type="button">Cancel</button></div><div class="msg" id="fm"></div></div>';
   document.body.appendChild(ov);
@@ -118,7 +118,7 @@ function form(C,row,done){
   $("#sv",ov).onclick=function(){
     var data={};
     for(var k=0;k<C.fields.length;k++){var f=C.fields[k],el=$("#f_"+f.k,ov),v;
-      if(f.t==="check")v=el.checked;else if(f.t==="number")v=el.value===""?null:Number(el.value);else v=el.value.trim();
+      if(f.t==="check")v=el.checked;else if(f.t==="number")v=el.value===""?null:Number(el.value);else if(f.t==="date")v=el.value||null;else v=el.value.trim();
       if(f.req&&!v){msg("Please fill: "+f.l.replace(" *",""));return}
       if(f.t==="number"&&(f.k==="sort"||f.k==="cc"||f.k==="year"||f.k==="km")&&v===null&&f.k==="sort")v=100;
       data[f.k]=v}

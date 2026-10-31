@@ -80,8 +80,20 @@ function imgTag(m){var u=m.images&&m.images[0];return u?'<img loading="lazy" src
 function badge(m){return m.images&&m.images.length>1?'<span class="badge">'+m.images.length+' photos</span>':""}
 function drawFilters(){var t=["All"];BIKES.forEach(function(b){if(t.indexOf(b.type)<0)t.push(b.type)});if(t.indexOf(cur)<0)cur="All";
   var h="";t.forEach(function(x){h+='<button type="button" class="chip'+(x===cur?' on':'')+'" data-t="'+esc(x)+'">'+esc(x)+'</button>'});$("filters").innerHTML=t.length>2?h:""}
+// ---- bike card (cream card, key points, strike-through ex-showroom price, offer price, orange button)
+var LANT='<svg class="lants" viewBox="0 0 70 96" aria-hidden="true"><g stroke="#8a6a3a" stroke-width="1.2" fill="none"><path d="M22 0v18M52 0v10"/></g><g><rect x="18" y="18" width="8" height="4" rx="1" fill="#c9922e"/><path d="M14 26c0-3 3-4 8-4s8 1 8 4v22c0 3-3 4-8 4s-8-1-8-4z" fill="#e8472b"/><path d="M22 22v30M14 32h16M14 42h16" stroke="#f6c445" stroke-width="2"/><path d="M22 52v10M19 62h6" stroke="#c9922e" stroke-width="2"/><rect x="48" y="10" width="8" height="4" rx="1" fill="#c9922e"/><path d="M42 18c0-3 4-5 10-5s10 2 10 5v32c0 3-4 5-10 5s-10-2-10-5z" fill="#d9322a"/><path d="M52 13v42M42 26h20M42 40h20" stroke="#f6c445" stroke-width="2.4"/><circle cx="52" cy="30" r="5" fill="#2f8f4e"/><path d="M52 55v16M48 71h8" stroke="#c9922e" stroke-width="2.4"/></g></svg>';
+function rupee(s){s=String(s||"").trim();return s?s.replace(/^\s*(rs\.?|inr|₹)\s*/i,"₹ "):""}
+function today(){return new Date(Date.now()+19800000).toISOString().slice(0,10)}
+function offerOn(m){return !!(m.offer_price&&(!m.offer_till||String(m.offer_till).slice(0,10)>=today()))}
+function tillTxt(m){var d=String(m.offer_till||"").slice(0,10);return /^\d{4}-\d{2}-\d{2}$/.test(d)?"(Valid Till "+d.slice(8,10)+"/"+d.slice(5,7)+"/"+d.slice(2,4)+")":""}
+function specsOf(m){var a=String(m.specs||"").split(/\r?\n/).map(function(x){return x.trim()}).filter(Boolean);
+  if(!a.length){if(m.cc)a.push(m.cc+"cc Engine Displacement");if(m.mileage)a.push("Mileage "+m.mileage);if(m.colours)a.push("Colours: "+m.colours);if(m.note)a.push(m.note)}
+  return a.slice(0,4)}
 function drawGrid(){var h="";BIKES.forEach(function(m,i){if(cur!=="All"&&m.type!==cur)return;
-  h+='<div class="card"><div class="img" data-open="b:'+i+'">'+imgTag(m)+badge(m)+'</div><div class="b"><h3>'+esc(m.name)+'</h3><div class="tags"><span class="tag">'+esc(m.type)+'</span>'+(m.cc?'<span class="tag">'+m.cc+' cc</span>':'')+(m.mileage?'<span class="tag">'+esc(m.mileage)+'</span>':'')+'</div><div>'+esc(m.note||"")+'</div><div class="price">'+(m.price?'Ex-showroom '+esc(m.price):'Call for price')+'</div><button class="btn btn-red" data-m="'+esc(m.name)+'">Get Best Price</button></div></div>'});
+  var sp=specsOf(m).map(function(x){return "<li>"+esc(x)+"</li>"}).join(""),on=offerOn(m),pr=rupee(m.price),city=String(S.city||"").toUpperCase(),pb;
+  if(on)pb='<div class="p1"><s>'+esc(pr||"")+'</s><small>Ex-Showroom Price'+(city?", "+esc(city):"")+'</small></div><div class="p2"><b>'+esc(rupee(m.offer_price))+'</b><small class="og">Offer Price*</small>'+(tillTxt(m)?'<small class="rd">'+tillTxt(m)+'</small>':'')+'</div>';
+  else pb='<div class="p1 only">'+(pr?'<b>'+esc(pr)+'</b><small>Ex-Showroom Price'+(city?", "+esc(city):"")+'</small>':'<b class="cp">Call for price</b>')+'</div>';
+  h+='<div class="bcard"><div class="bin">'+LANT+'<div class="bimg" data-open="b:'+i+'">'+imgTag(m)+badge(m)+'</div><h3>'+esc(m.name)+'</h3><ul class="specs">'+sp+'</ul><div class="prow">'+pb+'</div><button type="button" class="deal" data-m="'+esc(m.name)+'">GET BEST DEAL</button></div></div>'});
   $("grid").innerHTML=h||"<p>No bike in this category.</p>"}
 function draw(){drawFilters();drawGrid()}
 // ---- used bikes
@@ -99,10 +111,10 @@ $("usedFilters").addEventListener("click",function(e){var t=e.target.getAttribut
 function openModal(kind,i){var m=(kind==="b"?BIKES:USED)[i];if(!m)return;var im=m.images||[];
   var g=im.length?'<img class="gmain" id="gmain" src="'+esc(im[0])+'" alt="">'+(im.length>1?'<div class="thumbs">'+im.map(function(u,k){return '<img data-g="'+esc(u)+'" class="'+(k?'':'on')+'" src="'+esc(u)+'" alt="">'}).join("")+'</div>':""):'<div class="gph">Photo coming soon</div>';
   var tags=kind==="b"?[m.type,m.cc?m.cc+" cc":"",m.mileage,m.colours]:usedTags(m);
-  var title=kind==="b"?m.name:m.title,price=kind==="b"?(m.price?"Ex-showroom "+m.price:"Call for price"):(usedPrice(m)?"Sale price "+usedPrice(m):"Call for price");
+  var title=kind==="b"?m.name:m.title,price=kind==="b"?(offerOn(m)?"Offer price "+rupee(m.offer_price)+" (Ex-showroom "+rupee(m.price)+")":m.price?"Ex-showroom "+rupee(m.price):"Call for price"):(usedPrice(m)?"Sale price "+usedPrice(m):"Call for price");
   var txt=(m.description||m.note||"");
   $("mbody").innerHTML=g+'<h3>'+esc(title)+'</h3><div class="tags">'+tags.filter(Boolean).map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join("")+'</div><p><b>'+esc(price)+'</b></p>'+(txt?'<p>'+esc(txt)+'</p>':'')+
-   '<div class="mbtns">'+(kind==="b"?'<button class="btn btn-red" type="button" data-m="'+esc(title)+'">Get Best Price</button>':'')+'<a class="btn btn-wa" target="_blank" rel="noopener" href="'+esc(wa("Hello, I want details of: "+title))+'">WhatsApp</a><a class="btn btn-line" href="tel:+91'+S.phone+'">Call</a></div>';
+   '<div class="mbtns">'+(kind==="b"?'<button class="btn btn-red" type="button" data-m="'+esc(title)+'">Get Best Deal</button>':'')+'<a class="btn btn-wa" target="_blank" rel="noopener" href="'+esc(wa("Hello, I want details of: "+title))+'">WhatsApp</a><a class="btn btn-line" href="tel:+91'+S.phone+'">Call</a></div>';
   $("modal").hidden=false}
 function closeModal(){$("modal").hidden=true}
 $("mclose").addEventListener("click",closeModal);

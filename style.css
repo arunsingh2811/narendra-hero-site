@@ -74,3 +74,24 @@ iframe{width:100%;height:280px;border:0;border-radius:16px;filter:grayscale(1)}
 .sdots button{width:26px;height:3px;border:0;padding:0;background:rgba(255,255,255,.4);cursor:pointer;border-radius:2px}.sdots button.on{background:#fff}
 @media(max-width:760px){.hero.has-slides::before{background:rgba(8,8,10,.6)}}
 @media(prefers-reduced-motion:reduce){.hero .slide{transition:none}}
+
+/* ---- bike cards: cream card with a cut corner, key points, price row and an orange button */
+#grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+.bcard{background:#c9a06a;padding:1px;clip-path:polygon(0 0,100% 0,100% calc(100% - 22px),calc(100% - 22px) 100%,0 100%);filter:none}
+.bin{position:relative;background:linear-gradient(180deg,#fff7e4 0%,#ffefcd 100%);clip-path:polygon(0 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%);padding:18px 18px 18px;display:flex;flex-direction:column;height:100%;box-sizing:border-box;font-family:"Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif}
+.bin .lants{position:absolute;right:10px;top:0;width:54px;height:auto;pointer-events:none}
+.bimg{position:relative;height:190px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin:6px 34px 8px 0}
+.bimg img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;mix-blend-mode:multiply}
+.bimg span{color:#b4a98f;font-size:13px}
+.bin h3{margin:10px 0 8px;font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:#161616}
+.specs{margin:0 0 14px;padding-left:20px;font-size:17px;line-height:1.55;color:#222;min-height:105px}
+.specs li::marker{color:#222}
+.prow{display:flex;gap:0;align-items:stretch;margin-top:auto;padding-bottom:14px}
+.prow .p1{flex:1;padding-right:14px;min-width:0}.prow .p2{flex:1;padding-left:16px;border-left:1px solid #d9bd8f;min-width:0}
+.prow s{display:block;font-size:27px;font-weight:700;color:#b9ae94;text-decoration-thickness:2px}
+.prow b{display:block;font-size:29px;font-weight:700;color:#111;line-height:1.15}.prow .p1.only b{font-size:27px}.prow .p1 b.cp{font-size:21px}
+.prow small{display:block;font-size:14px;color:#a89e86;line-height:1.25;margin-top:3px;text-transform:uppercase}
+.prow .p2 small.og{color:#1a8f3c;text-transform:none;font-size:15px;font-weight:600}.prow .p2 small.rd{color:#d0261b;text-transform:none;font-size:15px}
+.deal{border:0;background:#eb4c1f;color:#fff;font:700 21px "Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif;letter-spacing:.3px;padding:15px 12px;cursor:pointer;width:100%;transition:.15s}
+.deal:hover{background:#d4400f}
+@media(max-width:420px){#grid{grid-template-columns:1fr}.prow s,.prow b{font-size:25px}}
