@@ -187,11 +187,6 @@ BIKES=fallback();draw();drawUsed();load();
       if(res.some(Boolean)){sm("Thank you! Our team will call you soon.",1);f.reset();models()}else{viaWa()}
       b.disabled=false;b.textContent="Send Details"})});
 })();
-// ---- EMI
-function emi(){var P=+$("emiP").value||0,D=+$("emiD").value||0,r=(+$("emiR").value||0)/1200,n=+$("emiN").value,L=Math.max(0,P-D),e;
-  e=r>0?L*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1):L/n;
-  $("emiOut").innerHTML='Loan: Rs '+Math.round(L).toLocaleString("en-IN")+'<br>Monthly EMI: <b>Rs '+Math.round(e).toLocaleString("en-IN")+'</b> x '+n+' months<br><small>Total payable: Rs '+Math.round(e*n+D).toLocaleString("en-IN")+'</small>'}
-["emiP","emiD","emiR","emiN"].forEach(function(i){$(i).addEventListener("input",emi)});emi();
 // ---- enquiry
 function say(t,ok){var m=$("msg");m.textContent=t;m.className="msg "+(ok?"ok":"err")}
 function viaWhatsApp(text){window.open(wa(text),"_blank");say("Opening WhatsApp. Please press Send there.",1)}
