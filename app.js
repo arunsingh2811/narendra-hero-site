@@ -71,13 +71,14 @@ $("barCall").href="tel:+91"+S.phone;$("barWa").href=wa();
 $("addr").textContent=S.address;$("hrs").textContent=S.hours;
 $("telA").textContent=S.phone;$("telA").href="tel:+91"+S.phone;if(S.email){$("mailA").textContent=S.email;$("mailA").href="mailto:"+S.email}else{$("mailP").style.display="none"}
 $("yr").textContent=new Date().getFullYear();$("fname").textContent=S.fullName+" ("+S.name+")";
+function goNew(u){var w=null;try{w=window.open(u,"_blank")}catch(e){}if(!w)location.href=u}
 // ---- hidden staff shortcut: tap the Hero logo in the footer 5 times (each tap within 1.5 sec of the last) -> BizBale staff login
 (function(){
   var n=0,last=0;
   $("flogo").addEventListener("click",function(e){
     if(!S.staffLink||!e.target||e.target.tagName!=="IMG")return;
     var now=Date.now();n=now-last>1500?1:n+1;last=now;
-    if(n>=5){n=0;try{localStorage.setItem("nh_staff","1")}catch(x){}location.href=S.staffLink}
+    if(n>=5){n=0;try{localStorage.setItem("nh_staff","1")}catch(x){}goNew(S.staffLink)}
   });
 })();
 // ---- hidden admin shortcut: tap the "Website visitors" line (or the copyright line) in the footer 5 times (each tap within 1.5 sec of the last) -> this site's staff admin login
@@ -86,7 +87,7 @@ $("yr").textContent=new Date().getFullYear();$("fname").textContent=S.fullName+"
   function tap(){
     if(!S.adminLink)return;
     var now=Date.now();n=now-last>1500?1:n+1;last=now;
-    if(n>=5){n=0;try{localStorage.setItem("nh_staff","1")}catch(x){}location.href=S.adminLink}
+    if(n>=5){n=0;try{localStorage.setItem("nh_staff","1")}catch(x){}goNew(S.adminLink)}
   }
   ["vis","fname"].forEach(function(id){var el=$(id);if(el)el.addEventListener("click",tap)});
 })();
