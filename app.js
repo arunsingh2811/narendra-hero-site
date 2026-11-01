@@ -237,6 +237,19 @@ $("grid").addEventListener("click",onGrid);$("usedGrid").addEventListener("click
 $("filters").addEventListener("click",function(e){var t=e.target.getAttribute("data-t");if(t){cur=t;drawFilters();drawGrid()}});
 BIKES=fallback();draw();drawUsed();load();
 window.NH_REDRAW=function(){$("otitle").textContent=T($("opop").getAttribute("data-title")||"Get Onroad Price");draw();drawUsed();drawSocial();setPicked(picked);showVis();["omsg","sellMsg","msg","jobMsg"].forEach(function(i){var m=$(i);m.textContent="";if(m.className.indexOf("err")>=0)m.className=m.className.replace(" err","")})};
+// ---- "Sell Your Bike" and "Apply for Job" open as a popup (menu link, buttons, or a #sell / #jobs address)
+var POPS={"#sell":"sellPop","#jobs":"jobsPop"};
+function openPop(id){var p=$(id);if(!p)return;closeModal();p.hidden=false;p.querySelector(".mbox").scrollTop=0;
+  [].forEach.call(p.querySelectorAll(".msg"),function(m){m.textContent="";m.className="msg"})}
+function closePop(id){var p=$(id);if(p)p.hidden=true;if(POPS[location.hash]===id){try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}}}
+function closeAllPops(){Object.keys(POPS).forEach(function(k){closePop(POPS[k])})}
+document.addEventListener("click",function(e){
+  var a=e.target.closest&&e.target.closest("a[href]");
+  if(a){var h=a.getAttribute("href");if(POPS[h]){e.preventDefault();openPop(POPS[h]);return}}
+  if(e.target.hasAttribute&&(e.target.hasAttribute("data-close")||e.target.hasAttribute("data-pop")))closeAllPops()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeAllPops()});
+window.addEventListener("hashchange",function(){if(POPS[location.hash])openPop(POPS[location.hash])});
+if(POPS[location.hash])openPop(POPS[location.hash]);
 // ---- sell your bike (customer leaves details so we can call)
 (function(){
   var mk=$("makeList"),md=$("modelList"),f=$("sellForm");
@@ -263,7 +276,7 @@ window.NH_REDRAW=function(){$("otitle").textContent=T($("opop").getAttribute("da
     if(USE_DB){jobs.push(fetch(API+"/rest/v1/sell_requests",{method:"POST",headers:{apikey:KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({name:d.name,mobile:d.mobile,make:d.make,model:d.model,year:yr,km:kmT?+kmT:null,expected_price:prT,place:d.place||""})}).then(function(r){if(!r.ok)throw new Error("db")}))}
     if(S.web3formsKey){jobs.push(fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({access_key:S.web3formsKey,subject:"Customer wants to sell a bike - "+d.make+" "+d.model,from_name:S.name,name:d.name,mobile:d.mobile,make:d.make,model:d.model,year:d.year||"-",km:kmT||"-",expected_price:prT||"-",place:d.place||"-"})}).then(function(r){return r.json()}).then(function(j){if(!j||!j.success)throw new Error("mail")}))}
     Promise.all(jobs.map(function(p){return p.then(function(){return true},function(){return false})})).then(function(res){
-      if(res.some(Boolean)){sm("Thank you! Our team will call you soon.",1);f.reset();models()}else{viaWa()}
+      if(res.some(Boolean)){sm("Thank you! Our team will call you soon.",1);f.reset();models();setTimeout(function(){closePop("sellPop")},2800)}else{viaWa()}
       b.disabled=false;b.textContent=T("Send Details")})});
 })();
 // ---- apply for job (candidate leaves basic details so we can call)
@@ -289,7 +302,7 @@ window.NH_REDRAW=function(){$("otitle").textContent=T($("opop").getAttribute("da
     if(USE_DB){jobs.push(fetch(API+"/rest/v1/job_applications",{method:"POST",headers:{apikey:KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({name:d.name,father_name:d.father,mobile:d.mobile,alt_mobile:d.alt||"",age:age,place:d.place,education:d.education,applied_for:d.position||"",experience:d.experience})}).then(function(r){if(!r.ok)throw new Error("db")}))}
     if(S.web3formsKey){jobs.push(fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({access_key:S.web3formsKey,subject:"Job application - "+d.name+" ("+pos+")",from_name:S.name,name:d.name,father_name:d.father,mobile:d.mobile,alt_mobile:d.alt||"-",age:d.age||"-",place:d.place,education:d.education,position:pos,experience:d.experience})}).then(function(r){return r.json()}).then(function(j){if(!j||!j.success)throw new Error("mail")}))}
     Promise.all(jobs.map(function(p){return p.then(function(){return true},function(){return false})})).then(function(res){
-      if(res.some(Boolean)){jm("Thank you! We received your application. Our team will call you.",1);f.reset()}else{viaWa()}
+      if(res.some(Boolean)){jm("Thank you! We received your application. Our team will call you.",1);f.reset();setTimeout(function(){closePop("jobsPop")},2800)}else{viaWa()}
       b.disabled=false;b.textContent=T("Apply Now")})});
 })();
 // ---- enquiry

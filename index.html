@@ -39,9 +39,9 @@
   <p class="ubtns"><a class="btn btn-wa" id="waUsed" target="_blank" rel="noopener" data-i>Ask about used bikes on WhatsApp</a> <a class="btn btn-red" href="#sell" data-i>Sell Your Bike</a></p>
 </div></section>
 
-<section class="alt" id="sell"><div class="wrap two">
-  <div><h2 data-i>Sell Your Bike</h2><p class="sub" data-i>Want to sell your old bike? Share a few details and our team will call you.</p></div>
-  <form class="box" id="sellForm" novalidate>
+<div class="modal" id="sellPop" data-pop hidden><div class="mbox"><button class="mclose" type="button" data-close aria-label="Close">&times;</button>
+  <h3 data-i>Sell Your Bike</h3><p class="sub" data-i>Want to sell your old bike? Share a few details and our team will call you.</p>
+  <form class="pform" id="sellForm" novalidate>
     <input class="hp" type="text" name="botcheck" tabindex="-1" autocomplete="off">
     <label data-i>Your name *</label><input name="name" required maxlength="60">
     <label data-i>Mobile number *</label><input name="mobile" required inputmode="numeric" maxlength="10" placeholder="10 digit number" data-ip>
@@ -53,11 +53,11 @@
     <div class="msg" id="sellMsg"></div>
     <datalist id="makeList"></datalist><datalist id="modelList"></datalist>
   </form>
-</div></section>
+</div></div>
 
-<section id="jobs"><div class="wrap two">
-  <div><h2 data-i>Apply for Job</h2><p class="sub" data-i>Want to work with us? Fill your basic details and our team will call you.</p></div>
-  <form class="box" id="jobForm" novalidate>
+<div class="modal" id="jobsPop" data-pop hidden><div class="mbox"><button class="mclose" type="button" data-close aria-label="Close">&times;</button>
+  <h3 data-i>Apply for Job</h3><p class="sub" data-i>Want to work with us? Fill your basic details and our team will call you.</p>
+  <form class="pform" id="jobForm" novalidate>
     <input class="hp" type="text" name="botcheck" tabindex="-1" autocomplete="off">
     <label data-i>Your name *</label><input name="name" required maxlength="60" autocomplete="name">
     <label data-i>Father's name *</label><input name="father" required maxlength="60">
@@ -71,7 +71,7 @@
     <button class="btn btn-red" style="width:100%;margin-top:14px" type="submit" id="jobSend" data-i>Apply Now</button>
     <div class="msg" id="jobMsg"></div>
   </form>
-</div></section>
+</div></div>
 
 <section id="enquiry"><div class="wrap two">
   <div><h2 data-i>Get Best Price / Book Test Ride</h2><p class="sub" data-i>Fill 2 details. Our team will call you.</p></div>

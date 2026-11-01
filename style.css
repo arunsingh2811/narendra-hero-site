@@ -156,3 +156,4 @@ html[lang="hi"] .tagrow.social .btn{letter-spacing:0}
 html[lang="hi"] select{font-family:"Noto Sans Devanagari","Barlow Semi Condensed",system-ui,sans-serif}
 @media(min-width:761px) and (max-width:940px){header nav{display:none}}
 header .hr{flex:none}header .btn-red{white-space:nowrap}
+[data-pop] .mbox{max-width:520px;padding:22px 18px 18px}[data-pop] .mbox h3{margin:0 40px 4px 0;font-size:24px}[data-pop] .mbox .sub{margin:0 0 6px;white-space:normal}.pform{margin:0}
