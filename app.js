@@ -35,7 +35,19 @@ var HI={
 "Opening WhatsApp. Please press Send there.":"व्हाट्सऐप खुल रहा है। कृपया वहां Send दबाएं।",
 "Thank you! Our team will call you with the onroad price soon.":"धन्यवाद! हमारी टीम जल्द ही आपको ऑनरोड प्राइस के लिए कॉल करेगी।",
 "Thank you! Our team will call you soon.":"धन्यवाद! हमारी टीम जल्द ही आपको कॉल करेगी।",
-"Show photo":"फोटो देखें"
+"Show photo":"फोटो देखें",
+"Apply for Job":"नौकरी के लिए आवेदन करें",
+"Want to work with us? Fill your basic details and our team will call you.":"हमारे साथ काम करना चाहते हैं? अपनी बेसिक जानकारी भरें, हमारी टीम आपको कॉल करेगी।",
+"Father's name *":"पिता का नाम *","Alternate number":"वैकल्पिक नंबर","Age":"आयु","Village / City *":"गांव / शहर *","Education *":"शिक्षा *",
+"12th, ITI, Diploma, B.Com...":"12वीं, ITI, डिप्लोमा, B.Com...","Post you want to apply for":"किस पद के लिए आवेदन करना है",
+"Any / Not sure":"कोई भी / पता नहीं","Sales Executive":"सेल्स एक्जीक्यूटिव","Service Mechanic / Technician":"सर्विस मैकेनिक / टेक्नीशियन",
+"Accountant / Cashier":"अकाउंटेंट / कैशियर","Office / Computer Operator":"ऑफिस / कंप्यूटर ऑपरेटर","Showroom Helper / Driver":"शोरूम हेल्पर / ड्राइवर","Other":"अन्य",
+"Experience *":"अनुभव *","Fresher, or for example: 2 years in bike showroom":"फ्रेशर, या जैसे: बाइक शोरूम में 2 साल","Apply Now":"अभी आवेदन करें",
+"Please enter your father's name.":"कृपया पिता का नाम लिखें।","Please enter your village or city.":"कृपया अपना गांव या शहर लिखें।",
+"Please enter your education.":"कृपया अपनी शिक्षा लिखें।","Please enter your experience. Write Fresher if you have none.":"कृपया अपना अनुभव लिखें। अनुभव नहीं है तो फ्रेशर लिखें।",
+"Please enter a valid alternate number, or leave it empty.":"कृपया सही वैकल्पिक नंबर लिखें, या खाली छोड़ दें।","Please enter your age in numbers, for example 25.":"कृपया अपनी आयु अंकों में लिखें, जैसे 25।",
+"Thank you! We received your application. Our team will call you.":"धन्यवाद! आपका आवेदन मिल गया है। हमारी टीम आपको कॉल करेगी।",
+"Facebook":"फेसबुक","Instagram":"इंस्टाग्राम","YouTube":"यूट्यूब","Telegram":"टेलीग्राम","X (Twitter)":"X (ट्विटर)","LinkedIn":"लिंक्डइन","Google Reviews":"गूगल रिव्यू"
 };
 var lang="en";try{lang=localStorage.getItem("nh_lang")==="hi"?"hi":"en"}catch(e){}
 function T(s){return lang==="hi"&&HI[s]?HI[s]:s}
@@ -118,7 +130,15 @@ function load(){
   rest("bikes?select=*&active=eq.true&order=sort.asc,name.asc").then(function(b){BIKES=b;draw()}).catch(function(){});
   rest("used_bikes?select=*&status=eq.available&order=created_at.desc").then(function(u){USED=u;drawUsed()}).catch(function(){});
   rest("banners?select=image_url&active=eq.true&order=sort.asc,id.asc&limit=6").then(setBanners).catch(function(){});
+  rest("site_links?select=key,label,url&active=eq.true&order=sort.asc,key.asc").then(function(r){SOCIAL=r||[];drawSocial()}).catch(function(){});
 }
+// ---- social media buttons under the phone / Call / WhatsApp line (links are set in Admin > Social Links)
+var SOCIAL=[];
+function drawSocial(){
+  var box=$("social"),h="";
+  SOCIAL.forEach(function(x){var u=String(x.url||"").trim();if(!/^https?:\/\//i.test(u)||!x.label)return;
+    h+='<a class="btn btn-sky" target="_blank" rel="noopener noreferrer" href="'+esc(u)+'">'+esc(T(x.label))+'</a>'});
+  box.innerHTML=h;box.hidden=!h}
 // ---- home page banner slideshow (photos are added in Admin > Banners)
 function setBanners(rows){
   var urls=(rows||[]).map(function(r){return r.image_url}).filter(Boolean);if(!urls.length)return;
@@ -216,7 +236,7 @@ function onGrid(e){var o=e.target.closest&&e.target.closest("[data-open]");if(o)
 $("grid").addEventListener("click",onGrid);$("usedGrid").addEventListener("click",onGrid);
 $("filters").addEventListener("click",function(e){var t=e.target.getAttribute("data-t");if(t){cur=t;drawFilters();drawGrid()}});
 BIKES=fallback();draw();drawUsed();load();
-window.NH_REDRAW=function(){$("otitle").textContent=T($("opop").getAttribute("data-title")||"Get Onroad Price");draw();drawUsed();setPicked(picked);showVis();["omsg","sellMsg","msg"].forEach(function(i){var m=$(i);m.textContent="";if(m.className.indexOf("err")>=0)m.className=m.className.replace(" err","")})};
+window.NH_REDRAW=function(){$("otitle").textContent=T($("opop").getAttribute("data-title")||"Get Onroad Price");draw();drawUsed();drawSocial();setPicked(picked);showVis();["omsg","sellMsg","msg","jobMsg"].forEach(function(i){var m=$(i);m.textContent="";if(m.className.indexOf("err")>=0)m.className=m.className.replace(" err","")})};
 // ---- sell your bike (customer leaves details so we can call)
 (function(){
   var mk=$("makeList"),md=$("modelList"),f=$("sellForm");
@@ -245,6 +265,32 @@ window.NH_REDRAW=function(){$("otitle").textContent=T($("opop").getAttribute("da
     Promise.all(jobs.map(function(p){return p.then(function(){return true},function(){return false})})).then(function(res){
       if(res.some(Boolean)){sm("Thank you! Our team will call you soon.",1);f.reset();models()}else{viaWa()}
       b.disabled=false;b.textContent=T("Send Details")})});
+})();
+// ---- apply for job (candidate leaves basic details so we can call)
+(function(){
+  var f=$("jobForm");if(!f)return;
+  function jm(t,ok){var m=$("jobMsg");m.textContent=T(t);m.className="msg "+(ok?"ok":"err")}
+  f.addEventListener("submit",function(ev){
+    ev.preventDefault();var d={};new FormData(f).forEach(function(v,k){d[k]=String(v).trim()});
+    if(d.botcheck){return}
+    if(!d.name||d.name.length<2){return jm("Please enter your name.",0)}
+    if(!d.father||d.father.length<2){return jm("Please enter your father's name.",0)}
+    if(!/^[6-9]\d{9}$/.test(d.mobile)){return jm("Please enter a valid 10 digit mobile number.",0)}
+    if(d.alt&&!/^[6-9]\d{9}$/.test(d.alt)){return jm("Please enter a valid alternate number, or leave it empty.",0)}
+    if(d.age&&(!/^\d{2}$/.test(d.age)||+d.age<14||+d.age>70)){return jm("Please enter your age in numbers, for example 25.",0)}
+    if(!d.place){return jm("Please enter your village or city.",0)}
+    if(!d.education||d.education.length<2){return jm("Please enter your education.",0)}
+    if(!d.experience||d.experience.length<2){return jm("Please enter your experience. Write Fresher if you have none.",0)}
+    var age=d.age?+d.age:null,pos=d.position||"Any";
+    var text="Job application - "+S.name+"\nName: "+d.name+"\nFather: "+d.father+"\nMobile: "+d.mobile+"\nAlternate: "+(d.alt||"-")+"\nAge: "+(age||"-")+"\nPlace: "+d.place+"\nEducation: "+d.education+"\nPost: "+pos+"\nExperience: "+d.experience;
+    function viaWa(){window.open(wa(text),"_blank");jm("Opening WhatsApp. Please press Send there.",1)}
+    if(!USE_DB&&!S.web3formsKey){return viaWa()}
+    var b=$("jobSend");b.disabled=true;b.textContent=T("Sending...");var jobs=[];
+    if(USE_DB){jobs.push(fetch(API+"/rest/v1/job_applications",{method:"POST",headers:{apikey:KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({name:d.name,father_name:d.father,mobile:d.mobile,alt_mobile:d.alt||"",age:age,place:d.place,education:d.education,applied_for:d.position||"",experience:d.experience})}).then(function(r){if(!r.ok)throw new Error("db")}))}
+    if(S.web3formsKey){jobs.push(fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({access_key:S.web3formsKey,subject:"Job application - "+d.name+" ("+pos+")",from_name:S.name,name:d.name,father_name:d.father,mobile:d.mobile,alt_mobile:d.alt||"-",age:d.age||"-",place:d.place,education:d.education,position:pos,experience:d.experience})}).then(function(r){return r.json()}).then(function(j){if(!j||!j.success)throw new Error("mail")}))}
+    Promise.all(jobs.map(function(p){return p.then(function(){return true},function(){return false})})).then(function(res){
+      if(res.some(Boolean)){jm("Thank you! We received your application. Our team will call you.",1);f.reset()}else{viaWa()}
+      b.disabled=false;b.textContent=T("Apply Now")})});
 })();
 // ---- enquiry
 function say(t,ok){var m=$("msg");m.textContent=T(t);m.className="msg "+(ok?"ok":"err")}

@@ -12,7 +12,7 @@
 <div class="banner" id="offer"></div>
 <header><div class="wrap">
   <a class="brand2" href="#top" id="brand" title="Narendra Hero"><span id="brandLogo"></span><span class="bname" id="bname"></span></a>
-  <nav><a href="#models" data-i>Bikes</a><a href="#used" data-i>Used Bikes</a><a href="#sell" data-i>Sell Your Bike</a><a href="#enquiry" data-i>Enquiry</a><a href="#contact" data-i>Contact</a></nav>
+  <nav><a href="#models" data-i>Bikes</a><a href="#used" data-i>Used Bikes</a><a href="#sell" data-i>Sell Your Bike</a><a href="#jobs" data-i>Apply for Job</a><a href="#enquiry" data-i>Enquiry</a><a href="#contact" data-i>Contact</a></nav>
   <div class="hr"><button type="button" class="langbtn" id="lang" data-l="en"><span class="le">EN</span><span class="lh">हिं</span></button><a class="btn btn-red" href="#enquiry" style="padding:8px 16px" data-pt="Get Best Price" data-i>Get Best Price</a></div>
 </div></header>
 
@@ -21,7 +21,8 @@
 <div class="hero" id="top"><div class="wrap">
   <h1 id="h1" class="sr"></h1>
   <div class="hl"><div class="full" id="full"></div>
-    <div class="tagrow"><p id="tag"></p><a class="ph" id="hphone"></a><a class="btn btn-sky" id="hcall" data-i>Call</a><a class="btn btn-sky" id="hwa" target="_blank" rel="noopener" data-i>WhatsApp</a></div></div>
+    <div class="tagrow"><p id="tag"></p><a class="ph" id="hphone"></a><a class="btn btn-sky" id="hcall" data-i>Call</a><a class="btn btn-sky" id="hwa" target="_blank" rel="noopener" data-i>WhatsApp</a></div>
+    <div class="tagrow social" id="social" hidden></div></div>
   <div class="btns"><a class="btn btn-red" href="#models" data-i>See Bikes</a><a class="btn btn-line" href="#enquiry" data-pt="Book Test Ride" data-i>Book Test Ride</a></div>
 </div></div>
 
@@ -51,6 +52,24 @@
     <button class="btn btn-red" style="width:100%;margin-top:14px" type="submit" id="sellSend" data-i>Send Details</button>
     <div class="msg" id="sellMsg"></div>
     <datalist id="makeList"></datalist><datalist id="modelList"></datalist>
+  </form>
+</div></section>
+
+<section id="jobs"><div class="wrap two">
+  <div><h2 data-i>Apply for Job</h2><p class="sub" data-i>Want to work with us? Fill your basic details and our team will call you.</p></div>
+  <form class="box" id="jobForm" novalidate>
+    <input class="hp" type="text" name="botcheck" tabindex="-1" autocomplete="off">
+    <label data-i>Your name *</label><input name="name" required maxlength="60" autocomplete="name">
+    <label data-i>Father's name *</label><input name="father" required maxlength="60">
+    <label data-i>Mobile number *</label><input name="mobile" required inputmode="numeric" maxlength="10" placeholder="10 digit number" data-ip autocomplete="tel">
+    <label data-i>Alternate number</label><input name="alt" inputmode="numeric" maxlength="10" placeholder="Optional" data-ip>
+    <div class="fg2 keep"><div><label data-i>Age</label><input name="age" inputmode="numeric" maxlength="2" placeholder="25"></div><div><label data-i>Village / City *</label><input name="place" required maxlength="60"></div></div>
+    <label data-i>Education *</label><input name="education" required maxlength="80" placeholder="12th, ITI, Diploma, B.Com..." data-ip>
+    <label data-i>Post you want to apply for</label>
+    <select name="position"><option value="" data-i>Any / Not sure</option><option value="Sales Executive" data-i>Sales Executive</option><option value="Service Mechanic / Technician" data-i>Service Mechanic / Technician</option><option value="Accountant / Cashier" data-i>Accountant / Cashier</option><option value="Office / Computer Operator" data-i>Office / Computer Operator</option><option value="Showroom Helper / Driver" data-i>Showroom Helper / Driver</option><option value="Other" data-i>Other</option></select>
+    <label data-i>Experience *</label><textarea name="experience" required rows="3" maxlength="300" placeholder="Fresher, or for example: 2 years in bike showroom" data-ip></textarea>
+    <button class="btn btn-red" style="width:100%;margin-top:14px" type="submit" id="jobSend" data-i>Apply Now</button>
+    <div class="msg" id="jobMsg"></div>
   </form>
 </div></section>
 

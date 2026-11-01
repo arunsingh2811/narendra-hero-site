@@ -57,13 +57,13 @@ function visitors(){
     var el=$("#vstat");if(!el)return;
     el.innerHTML='<div><b>'+today.toLocaleString("en-IN")+'</b><small>Visitors today</small></div><div><b>'+week.toLocaleString("en-IN")+'</b><small>Last 7 days</small></div><div><b>'+(isFinite(total)?total:0).toLocaleString("en-IN")+'</b><small>Total visitors</small></div>';el.hidden=false}).catch(function(){})}
 function cnt(n){return n?" ("+n+" new)":""}
-var LEADTABS=[{table:"enquiries",tab:"enq",name:"Enquiries",key:"newCount"},{table:"sell_requests",tab:"sell",name:"Sell Requests",key:"sellCount"}];
+var LEADTABS=[{table:"enquiries",tab:"enq",name:"Enquiries",key:"newCount"},{table:"sell_requests",tab:"sell",name:"Sell Requests",key:"sellCount"},{table:"job_applications",tab:"job",name:"Job Applications",key:"jobCount"}];
 function counts(){LEADTABS.forEach(function(c){rest("GET",c.table+"?select=id&status=eq.new").then(function(r){tabs[c.key]=r.length;var b=$('[data-t="'+c.tab+'"]');if(b)b.textContent=c.name+cnt(r.length)}).catch(function(){})})}
 function go(t){tab=t;
-  var el=$("#tabs");el.innerHTML=[["bikes","New Bikes"],["used","Used Bikes"],["ban","Banners"],["sell","Sell Requests"+cnt(tabs.sellCount)],["enq","Enquiries"+cnt(tabs.newCount)]].map(function(x){return '<button type="button" class="chip'+(x[0]===t?' on':'')+'" data-t="'+x[0]+'">'+x[1]+'</button>'}).join("");
+  var el=$("#tabs");el.innerHTML=[["bikes","New Bikes"],["used","Used Bikes"],["ban","Banners"],["sell","Sell Requests"+cnt(tabs.sellCount)],["job","Job Applications"+cnt(tabs.jobCount)],["enq","Enquiries"+cnt(tabs.newCount)],["links","Social Links"]].map(function(x){return '<button type="button" class="chip'+(x[0]===t?' on':'')+'" data-t="'+x[0]+'">'+x[1]+'</button>'}).join("");
   el.onclick=function(e){var v=e.target.getAttribute("data-t");if(v)go(v)};
   var p=$("#pane");p.innerHTML='<p class="hint">Loading...</p>';
-  (t==="bikes"?crud(p,BIKES):t==="used"?crud(p,USEDC):t==="ban"?banners(p):t==="sell"?leads(p,SELLC):leads(p,ENQC)).catch(function(e){p.innerHTML='<p class="msg err" style="display:block">'+esc(e.message)+'</p>'});
+  (t==="bikes"?crud(p,BIKES):t==="used"?crud(p,USEDC):t==="ban"?banners(p):t==="sell"?leads(p,SELLC):t==="job"?leads(p,JOBC):t==="links"?socialLinks(p):leads(p,ENQC)).catch(function(e){p.innerHTML='<p class="msg err" style="display:block">'+esc(e.message)+'</p>'});
   counts()}
 // ---------- generic list + form
 var BIKES={table:"bikes",order:"sort.asc,name.asc",label:"bike",add:"+ Add new bike",titleKey:"name",
@@ -158,6 +158,26 @@ var ENQC={table:"enquiries",tab:"enq",name:"Enquiries",key:"newCount",none:"No e
  info:function(r){return [r.model||"-",r.want||"-",r.place||"-"]}};
 var SELLC={table:"sell_requests",tab:"sell",name:"Sell Requests",key:"sellCount",none:"No sell request here.",what:"request",
  info:function(r){return [[r.make,r.model,r.year].filter(Boolean).join(" ")||"-",r.km!=null?Number(r.km).toLocaleString("en-IN")+" km":"-",r.expected_price?"Expects Rs "+Number(r.expected_price).toLocaleString("en-IN"):"-",r.place||"-"]}};
+var JOBC={table:"job_applications",tab:"job",name:"Job Applications",key:"jobCount",none:"No job application here.",what:"application",
+ info:function(r){return ["Father: "+(r.father_name||"-"),r.applied_for||"Any post",r.education||"-",r.experience||"-",(r.age?"Age "+r.age:"Age -")+(r.place?", "+r.place:""),r.alt_mobile?"Alt: "+r.alt_mobile:"No alt number"]}};
+// ---------- social media buttons shown under the phone number on the home page
+var PLATFORMS=[{k:"facebook",l:"Facebook",ph:"https://www.facebook.com/yourpage"},{k:"instagram",l:"Instagram",ph:"https://www.instagram.com/yourpage"},{k:"youtube",l:"YouTube",ph:"https://www.youtube.com/@yourchannel"},{k:"telegram",l:"Telegram",ph:"https://t.me/yourchannel"},{k:"x",l:"X (Twitter)",ph:"https://x.com/yourpage"},{k:"linkedin",l:"LinkedIn",ph:"https://www.linkedin.com/company/yourpage"},{k:"google",l:"Google Reviews",ph:"https://g.page/r/..."},{k:"custom1",l:"Other link 1",custom:1,ph:"https://..."},{k:"custom2",l:"Other link 2",custom:1,ph:"https://..."}];
+function cleanUrl(u){u=String(u||"").trim();if(!u)return "";if(!/^https?:\/\//i.test(u)){if(/^[a-z][a-z0-9+.-]*:/i.test(u))return null;u="https://"+u.replace(/^\/+/,"")}return /^https?:\/\/[^\s]+\.[^\s]+$/i.test(u)?u:null}
+function socialLinks(pane){
+  return rest("GET","site_links?select=*").then(function(rows){
+    var by={};(rows||[]).forEach(function(r){by[r.key]=r});
+    pane.innerHTML='<div class="box"><h3 style="margin:0 0 4px">Social media buttons</h3><p class="hint">These buttons show on the home page in one line under the phone number, next to Call and WhatsApp. Paste the full link of your page. A button shows only when the link is filled and "Show" is ticked.</p><div id="sl">'+PLATFORMS.map(function(p){var r=by[p.k]||{},u=r.url||"",on=r.active!==undefined?r.active:!!u;
+      return '<div class="fld" data-k="'+p.k+'" style="margin-top:12px">'+(p.custom?'<label>Button name</label><input data-f="label" maxlength="20" placeholder="Website, Justdial..." value="'+esc(r.label||"")+'" style="margin-bottom:6px">':'<label>'+esc(p.l)+'</label>')+'<input data-f="url" inputmode="url" autocomplete="off" placeholder="'+esc(p.ph)+'" value="'+esc(u)+'"><label style="font-weight:500;margin-top:6px"><input type="checkbox" data-f="on" style="width:auto" '+(on?"checked":"")+'> Show on website</label></div>'}).join("")+'</div><p style="margin-top:16px"><button class="btn btn-red" id="slsv" type="button">Save links</button></p><div class="msg" id="slm"></div></div>';
+    function msg(t,ok){var m=$("#slm");m.textContent=t;m.className="msg "+(ok?"ok":"err")}
+    $("#slsv").onclick=function(){
+      var out=[],bad="";
+      PLATFORMS.forEach(function(p,i){if(bad)return;var box=$('[data-k="'+p.k+'"]',pane),raw=$('[data-f="url"]',box).value,on=$('[data-f="on"]',box).checked,lab=p.custom?$('[data-f="label"]',box).value.trim():p.l,u=cleanUrl(raw);
+        if(u===null){bad="Please check the link for "+(lab||p.l)+". It must be a web link like https://...";return}
+        if(p.custom&&u&&!lab){bad="Please type a button name for "+p.l;return}
+        out.push({key:p.k,label:lab||p.l,url:u,active:!!(on&&u),sort:(i+1)*10})});
+      if(bad)return msg(bad);
+      var b=$("#slsv");b.disabled=true;msg("Saving...",1);
+      call("POST","/rest/v1/site_links?on_conflict=key",out,{Prefer:"resolution=merge-duplicates,return=minimal"}).then(function(){toast("Links saved");go("links")}).catch(function(er){msg(er.message);b.disabled=false})}})}
 function leads(pane,C){var flt="all";
   return rest("GET",C.table+"?select=*&order=created_at.desc&limit=300").then(function(rows){
     tabs[C.key]=rows.filter(function(r){return r.status==="new"}).length;var tb=$('[data-t="'+C.tab+'"]');if(tb)tb.textContent=C.name+cnt(tabs[C.key]);

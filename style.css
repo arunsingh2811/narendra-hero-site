@@ -145,3 +145,14 @@ html[lang="hi"] body,html[lang="hi"] button,html[lang="hi"] input,html[lang="hi"
 html[lang="hi"] .deal,html[lang="hi"] .btn{letter-spacing:0;text-transform:none}
 html[lang="hi"] nav{font-size:15px}
 @media(max-width:760px){.langbtn span{padding:7px 10px;font-size:13px}header .hr{gap:8px}}
+/* ---- social links row (under phone / Call / WhatsApp) and Apply for Job form */
+.hero .tagrow.social{margin:12px 0 0;gap:10px}.tagrow.social[hidden]{display:none}
+.tagrow.social .btn-sky{padding:7px 16px;font-size:14px}
+select{width:100%;padding:12px;border:1px solid #d6d6da;border-radius:10px;font:inherit;background:#fff}
+textarea{resize:vertical}
+header nav{white-space:nowrap;font-size:14.5px;gap:14px}@media(min-width:1121px){.bname{font-size:27px}}
+@media(min-width:761px) and (max-width:1120px){header .wrap{gap:10px}header nav{font-size:13.5px;gap:11px}header .hr{gap:8px}.bname{font-size:21px;letter-spacing:.2px}.brand2{gap:8px}.brand2 .logo{height:36px}.brand2 #brandLogo{padding-right:8px}header .btn-red{padding:9px 13px!important;font-size:13px}}
+html[lang="hi"] .tagrow.social .btn{letter-spacing:0}
+html[lang="hi"] select{font-family:"Noto Sans Devanagari","Barlow Semi Condensed",system-ui,sans-serif}
+@media(min-width:761px) and (max-width:940px){header nav{display:none}}
+header .hr{flex:none}header .btn-red{white-space:nowrap}
