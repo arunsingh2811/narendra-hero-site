@@ -262,6 +262,10 @@ document.addEventListener("click",function(e){
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeAllPops()});
 window.addEventListener("hashchange",function(){if(POPS[location.hash])openPop(POPS[location.hash])});
 if(POPS[location.hash])openPop(POPS[location.hash]);
+// ---- a link like narendrahero.com/#price (or ?go=price) opens the Name + Mobile card at once (for Facebook / Instagram bio links)
+var GOS={"price":"Get Best Price","bestprice":"Get Best Price","testride":"Book Test Ride"};
+function goCard(){var g=(location.hash||"").replace("#","").toLowerCase(),m=/[?&]go=([a-z]+)/i.exec(location.search);g=GOS[g]?g:(m?m[1].toLowerCase():"");if(GOS[g])openOnroad("",GOS[g])}
+window.addEventListener("hashchange",goCard);goCard();
 // ---- sell your bike (customer leaves details so we can call)
 (function(){
   var mk=$("makeList"),md=$("modelList"),f=$("sellForm");
