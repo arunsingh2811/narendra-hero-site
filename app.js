@@ -24,7 +24,7 @@ var HI={
 "All":"सभी","Photo coming soon":"फोटो जल्द आएगी","photos":"फोटो","No bike in this category.":"इस श्रेणी में कोई बाइक नहीं है।",
 "GET ONROAD PRICE":"ऑनरोड प्राइस पाएं","Ex-Showroom Price":"एक्स-शोरूम कीमत","Offer Price*":"ऑफर कीमत*","Call for price":"कीमत के लिए कॉल करें",
 "Valid Till":"मान्य तारीख","USED":"पुरानी","Sale Price":"बिक्री मूल्य","Model Year":"मॉडल वर्ष","km Driven":"किमी चली","Warranty:":"वारंटी:","Colour:":"रंग:","Colours:":"रंग:",
-"ENQUIRE ON WHATSAPP":"व्हाट्सऐप पर पूछें","Engine Displacement":"इंजन क्षमता","Mileage":"माइलेज",
+"Know More":"और जानें","ENQUIRE ON WHATSAPP":"व्हाट्सऐप पर पूछें","Engine Displacement":"इंजन क्षमता","Mileage":"माइलेज",
 "Offer price":"ऑफर कीमत","Ex-showroom":"एक्स-शोरूम","Sale price":"बिक्री मूल्य","Enquiry for:":"पूछताछ इस बाइक के लिए:",
 "Website visitors:":"वेबसाइट पर आए लोग:",
 "Please enter your name.":"कृपया अपना नाम लिखें।","Please enter a valid 10 digit mobile number.":"कृपया सही 10 अंकों का मोबाइल नंबर लिखें।",
@@ -196,7 +196,7 @@ function usedSpecs(m){var a=[];if(m.year)a.push(T("Model Year")+" "+m.year);if(m
 function drawUsed(){drawUsedFilters();var h="",city=String(S.city||"").toUpperCase();USED.forEach(function(m,i){if(curMake!=="All"&&usedMake(m)!==curMake)return;
   var sp=usedSpecs(m).map(function(x){return "<li>"+esc(x)+"</li>"}).join(""),pr=rupee(usedPrice(m));
   var pb='<div class="p1 only">'+(pr?'<b>'+esc(pr)+'</b><small>'+T('Sale Price')+(city?", "+esc(city):"")+'</small>':'<b class="cp">'+T('Call for price')+'</b>')+'</div>';
-  h+='<div class="bcard used"><div class="bin">'+LANT+'<span class="utag">'+T('USED')+'</span><div class="bimg" data-open="u:'+i+'">'+imgTag(m)+badge(m)+'</div><h3>'+esc(m.title)+'</h3><ul class="specs">'+sp+'</ul><div class="prow">'+pb+'</div><a class="deal" target="_blank" rel="noopener" href="'+esc(wa("Hello, I am interested in the used bike: "+m.title+(pr?" ("+pr+")":"")))+'">'+T('ENQUIRE ON WHATSAPP')+'</a></div></div>'});
+  h+='<div class="bcard used"><div class="bin">'+LANT+'<span class="utag">'+T('USED')+'</span><div class="bimg" data-open="u:'+i+'">'+imgTag(m)+badge(m)+'</div><h3>'+esc(m.title)+'</h3><ul class="specs">'+sp+'</ul><div class="prow">'+pb+'</div><button type="button" class="deal" data-km="'+esc(m.title+(pr?" ("+pr+")":""))+'">'+T('Know More')+'</button></div></div>'});
   $("usedGrid").innerHTML=h;$("usedSub").textContent=T(USED.length?"Checked second-hand bikes with sale price. Tap a photo to see more.":"No used bike listed right now. Call or WhatsApp us to know what is coming.")}
 $("usedFilters").addEventListener("click",function(e){var t=e.target.getAttribute("data-um");if(t){curMake=t;drawUsed()}});
 // ---- detail popup
@@ -228,7 +228,7 @@ $("oform").addEventListener("input",function(){var m=$("omsg");if(m.className.in
 $("opop").addEventListener("click",function(e){if(e.target===$("opop")&&!$("ox").hidden)closeOnroad()});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("opop").hidden&&!$("ox").hidden)closeOnroad()});
 $("oform").addEventListener("submit",function(ev){
-  ev.preventDefault();var f=ev.target,d={},model=$("opop").getAttribute("data-bike")||"",ptitle=$("opop").getAttribute("data-title")||"",wantT=ptitle==="Book Test Ride"?"Test ride":ptitle==="Get Best Price"?"Best price":"Onroad price";new FormData(f).forEach(function(v,k){d[k]=String(v).trim()});
+  ev.preventDefault();var f=ev.target,d={},model=$("opop").getAttribute("data-bike")||"",ptitle=$("opop").getAttribute("data-title")||"",wantT=ptitle==="Book Test Ride"?"Test ride":ptitle==="Get Best Price"?"Best price":ptitle==="Know More"?"Know more (used bike)":"Onroad price";new FormData(f).forEach(function(v,k){d[k]=String(v).trim()});
   function om(t,ok){var m=$("omsg");m.textContent=T(t);m.className="omsg "+(ok?"ok":"err")}
   if(d.botcheck){return}
   if(!d.name||d.name.length<2){return om("Please enter your name.",0)}
@@ -244,7 +244,7 @@ $("oform").addEventListener("submit",function(ev){
     b.disabled=false;b.textContent=T("SAVE")})});
 [].forEach.call(document.querySelectorAll('header .btn-red,.hero .btns a[href="#enquiry"]'),function(el){el.addEventListener("click",function(e){e.preventDefault();openOnroad("",el.getAttribute("data-pt")||"Get Best Price")})});
 function pick(name){closeModal();setPicked(name);$("enquiry").scrollIntoView({behavior:"smooth"})}
-function onGrid(e){var o=e.target.closest&&e.target.closest("[data-open]");if(o){var p=o.getAttribute("data-open").split(":");return openModal(p[0],+p[1])}var m=e.target.getAttribute&&e.target.getAttribute("data-m");if(m)pick(m);var op=e.target.getAttribute&&e.target.getAttribute("data-op");if(op)openOnroad(op)}
+function onGrid(e){var o=e.target.closest&&e.target.closest("[data-open]");if(o){var p=o.getAttribute("data-open").split(":");return openModal(p[0],+p[1])}var m=e.target.getAttribute&&e.target.getAttribute("data-m");if(m)pick(m);var op=e.target.getAttribute&&e.target.getAttribute("data-op");if(op)openOnroad(op);var km=e.target.getAttribute&&e.target.getAttribute("data-km");if(km)openOnroad(km,"Know More")}
 $("grid").addEventListener("click",onGrid);$("usedGrid").addEventListener("click",onGrid);
 $("filters").addEventListener("click",function(e){var t=e.target.getAttribute("data-t");if(t){cur=t;drawFilters();drawGrid()}});
 BIKES=fallback();draw();drawUsed();load();
