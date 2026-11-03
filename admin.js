@@ -60,15 +60,24 @@ function cnt(n){return n?" ("+n+" new)":""}
 var LEADTABS=[{table:"enquiries",tab:"enq",name:"Enquiries",key:"newCount"},{table:"sell_requests",tab:"sell",name:"Sell Requests",key:"sellCount"},{table:"job_applications",tab:"job",name:"Job Applications",key:"jobCount"}];
 function counts(){LEADTABS.forEach(function(c){rest("GET",c.table+"?select=id&status=eq.new").then(function(r){tabs[c.key]=r.length;var b=$('[data-t="'+c.tab+'"]');if(b)b.textContent=c.name+cnt(r.length)}).catch(function(){})})}
 function go(t){tab=t;
-  var el=$("#tabs");el.innerHTML=[["bikes","New Bikes"],["used","Used Bikes"],["ban","Banners"],["sell","Sell Requests"+cnt(tabs.sellCount)],["job","Job Applications"+cnt(tabs.jobCount)],["enq","Enquiries"+cnt(tabs.newCount)],["links","Social Links"]].map(function(x){return '<button type="button" class="chip'+(x[0]===t?' on':'')+'" data-t="'+x[0]+'">'+x[1]+'</button>'}).join("");
+  var el=$("#tabs");el.innerHTML=[["bikes","New Bikes"],["used","Used Bikes"],["ban","Banners"],["sell","Sell Requests"+cnt(tabs.sellCount)],["job","Job Applications"+cnt(tabs.jobCount)],["enq","Enquiries"+cnt(tabs.newCount)],["reels","Promo Reels"],["links","Social Links"]].map(function(x){return '<button type="button" class="chip'+(x[0]===t?' on':'')+'" data-t="'+x[0]+'">'+x[1]+'</button>'}).join("");
   el.onclick=function(e){var v=e.target.getAttribute("data-t");if(v)go(v)};
   var p=$("#pane");p.innerHTML='<p class="hint">Loading...</p>';
-  (t==="bikes"?crud(p,BIKES):t==="used"?crud(p,USEDC):t==="ban"?banners(p):t==="sell"?leads(p,SELLC):t==="job"?leads(p,JOBC):t==="links"?socialLinks(p):leads(p,ENQC)).catch(function(e){p.innerHTML='<p class="msg err" style="display:block">'+esc(e.message)+'</p>'});
+  (t==="bikes"?crud(p,BIKES):t==="used"?crud(p,USEDC):t==="ban"?banners(p):t==="sell"?leads(p,SELLC):t==="job"?leads(p,JOBC):t==="reels"?crud(p,PROMOC):t==="links"?socialLinks(p):leads(p,ENQC)).catch(function(e){p.innerHTML='<p class="msg err" style="display:block">'+esc(e.message)+'</p>'});
   counts()}
 // ---------- generic list + form
 var BIKES={table:"bikes",order:"sort.asc,name.asc",label:"bike",add:"+ Add new bike",titleKey:"name",
  fields:[{k:"name",l:"Bike name *",req:1,ph:"Splendor+ i3s"},{k:"type",l:"Type",t:"select",o:["Motorcycle","Scooter"]},{k:"cc",l:"Engine (cc)",t:"number"},{k:"price",l:"Ex-showroom price",ph:"Rs 76,000"},{k:"mileage",l:"Mileage",ph:"65 kmpl"},{k:"colours",l:"Colours",ph:"Black, Red, Blue"},{k:"note",l:"One line about the bike",full:1},{k:"specs",l:"Key points on the card (one per line, best 4)",t:"textarea",full:1,ph:"124.6cc Engine Displacement\nMax Power 9 BHP @ 7000 rpm\n5.3 L Fuel Tank\nAuto-Cancel Winkers"},{k:"offer_price",l:"Offer price (shown big)",ph:"Rs 80,715"},{k:"offer_till",l:"Offer valid till",t:"date"},{k:"description",l:"Details (optional)",t:"textarea",full:1},{k:"sort",l:"Order number (small = first)",t:"number",d:100},{k:"active",l:"Show on website",t:"check",d:true}],
  sub:function(r){return [r.type,r.cc?r.cc+" cc":"",r.price||"no price"].filter(Boolean).join(" | ")},
+ flag:function(r){return r.active?"":'<span class="chipx off">Hidden</span>'},
+ toggle:function(r){return r.active?{l:"Hide",p:{active:false}}:{l:"Show",p:{active:true}}}};
+var PROMOC={table:"promo_reels",order:"sort.asc,id.asc",label:"promo reel",add:"+ Add promo reel",titleKey:"title",minPhotos:1,maxPhotos:1,
+ fields:[{k:"title",l:"Title *",req:1,ph:"Matra Rs 5,999 down payment me bike",full:1},{k:"fb_url",l:"Facebook reel link",ph:"https://www.facebook.com/reel/...",full:1},{k:"ig_url",l:"Instagram reel link",ph:"https://www.instagram.com/reel/...",full:1},{k:"yt_url",l:"YouTube link",ph:"https://youtube.com/shorts/...",full:1},{k:"sort",l:"Order (small number shows first)",t:"number",ph:"100"}],
+ beforeSave:function(d){var any=false;["fb_url","ig_url","yt_url"].forEach(function(k){var u=String(d[k]||"").trim();d[k]=u});
+  var bad=["fb_url","ig_url","yt_url"].filter(function(k){return d[k]&&!/^https?:\/\/[^\s]+$/i.test(d[k])});if(bad.length)return "Links must start with https://";
+  if(!d.fb_url&&!d.ig_url&&!d.yt_url)return "Please paste at least one reel link (Facebook, Instagram or YouTube).";
+  if(d.sort==null)d.sort=100},
+ sub:function(r){return ["Facebook","Instagram","YouTube"].filter(function(n,i){return r[["fb_url","ig_url","yt_url"][i]]}).join(", ")||"no link"},
  flag:function(r){return r.active?"":'<span class="chipx off">Hidden</span>'},
  toggle:function(r){return r.active?{l:"Hide",p:{active:false}}:{l:"Show",p:{active:true}}}};
 var price0=function(r){return r.sale_price!=null&&r.sale_price!==""?"Rs "+Number(r.sale_price).toLocaleString("en-IN"):(r.price||"")};
@@ -122,7 +131,7 @@ function form(C,row,done){
       if(f.req&&!v){msg("Please fill: "+f.l.replace(" *",""));return}
       if(f.t==="number"&&(f.k==="sort"||f.k==="cc"||f.k==="year"||f.k==="km")&&v===null&&f.k==="sort")v=100;
       data[f.k]=v}
-    if(C.beforeSave)C.beforeSave(data);
+    if(C.beforeSave){var bse=C.beforeSave(data);if(typeof bse==="string"){msg(bse);return}}
     var nph=imgs.length+files.length;
     if(MINP&&nph<MINP){msg("Please add at least "+MINP+" photo of the bike.");return}
     if(MAXP&&nph>MAXP){msg("Only "+MAXP+" photos are allowed. Remove some.");return}

@@ -7,6 +7,7 @@ var HI={
 "Our Bikes and Scooters":"हमारी बाइक्स और स्कूटर",
 "Tap \"Get Onroad Price\" on any model. We will call you back.":"किसी भी मॉडल पर \"ऑनरोड प्राइस पाएं\" दबाएं। हम आपको वापस कॉल करेंगे।",
 "Used Bikes ":"पुरानी बाइक्स",
+"Watch on":"देखें:","Latest offer reels - tap to watch":"ताज़ा ऑफर रील्स - देखने के लिए दबाएं",
 "Checked second-hand bikes with sale price.":"जांची-परखी पुरानी बाइक्स, बिक्री मूल्य के साथ।",
 "Checked second-hand bikes with sale price. Tap a photo to see more.":"जांची-परखी पुरानी बाइक्स, बिक्री मूल्य के साथ। और देखने के लिए फोटो दबाएं।",
 "No used bike listed right now. Call or WhatsApp us to know what is coming.":"अभी कोई पुरानी बाइक सूची में नहीं है। कौन सी आने वाली है, जानने के लिए हमें कॉल या व्हाट्सऐप करें।",
@@ -131,7 +132,18 @@ function load(){
   rest("used_bikes?select=*&status=eq.available&order=created_at.desc").then(function(u){USED=u;drawUsed()}).catch(function(){});
   rest("banners?select=image_url&active=eq.true&order=sort.asc,id.asc&limit=6").then(setBanners).catch(function(){});
   rest("site_links?select=key,label,url&active=eq.true&order=sort.asc,key.asc").then(function(r){SOCIAL=r||[];drawSocial()}).catch(function(){});
+  rest("promo_reels?select=id,title,images,fb_url,ig_url,yt_url&active=eq.true&order=sort.asc,id.asc&limit=6").then(function(r){REELS=r||[];drawReels()}).catch(function(){});
 }
+// ---- promo reels under the social buttons: a picture of the reel, tap it to watch on Facebook / Instagram / YouTube (set in Admin > Promo Reels)
+var REELS=[];
+function drawReels(){
+  var box=$("reels"),h="";
+  var P=[["fb_url","Facebook"],["ig_url","Instagram"],["yt_url","YouTube"]];
+  REELS.forEach(function(r){var img=r.images&&r.images[0],links=[],first="";
+    P.forEach(function(p){var u=String(r[p[0]]||"").trim();if(/^https?:\/\//i.test(u)){if(!first)first=u;links.push('<a class="rl" target="_blank" rel="noopener noreferrer" href="'+esc(u)+'">'+p[1]+'</a>')}});
+    if(!img||!first)return;
+    h+='<div class="rcard"><a class="rpic" target="_blank" rel="noopener noreferrer" href="'+esc(first)+'" aria-label="'+esc(r.title||"Watch")+'"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(r.title||"")+'"><span class="rplay" aria-hidden="true"></span></a><div class="rt">'+esc(r.title||"")+'</div><div class="rls"><span>'+T("Watch on")+'</span>'+links.join("")+'</div></div>'});
+  box.innerHTML=h?'<div class="rhead">'+T("Latest offer reels - tap to watch")+'</div><div class="rrow">'+h+'</div>':"";box.hidden=!h}
 // ---- social media buttons under the phone / Call / WhatsApp line (links are set in Admin > Social Links)
 var SOCIAL=[];
 function drawSocial(){
@@ -236,7 +248,7 @@ function onGrid(e){var o=e.target.closest&&e.target.closest("[data-open]");if(o)
 $("grid").addEventListener("click",onGrid);$("usedGrid").addEventListener("click",onGrid);
 $("filters").addEventListener("click",function(e){var t=e.target.getAttribute("data-t");if(t){cur=t;drawFilters();drawGrid()}});
 BIKES=fallback();draw();drawUsed();load();
-window.NH_REDRAW=function(){$("otitle").textContent=T($("opop").getAttribute("data-title")||"Get Onroad Price");draw();drawUsed();drawSocial();setPicked(picked);showVis();["omsg","sellMsg","msg","jobMsg"].forEach(function(i){var m=$(i);m.textContent="";if(m.className.indexOf("err")>=0)m.className=m.className.replace(" err","")})};
+window.NH_REDRAW=function(){$("otitle").textContent=T($("opop").getAttribute("data-title")||"Get Onroad Price");draw();drawUsed();drawSocial();drawReels();setPicked(picked);showVis();["omsg","sellMsg","msg","jobMsg"].forEach(function(i){var m=$(i);m.textContent="";if(m.className.indexOf("err")>=0)m.className=m.className.replace(" err","")})};
 // ---- "Sell Your Bike" and "Apply for Job" open as a popup (menu link, buttons, or a #sell / #jobs address)
 var POPS={"#sell":"sellPop","#jobs":"jobsPop"};
 function openPop(id){var p=$(id);if(!p)return;closeModal();p.hidden=false;p.querySelector(".mbox").scrollTop=0;
