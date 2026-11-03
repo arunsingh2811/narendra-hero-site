@@ -50,7 +50,7 @@ var HI={
 "Thank you! We received your application. Our team will call you.":"धन्यवाद! आपका आवेदन मिल गया है। हमारी टीम आपको कॉल करेगी।",
 "Facebook":"फेसबुक","Instagram":"इंस्टाग्राम","YouTube":"यूट्यूब","Telegram":"टेलीग्राम","X (Twitter)":"X (ट्विटर)","LinkedIn":"लिंक्डइन","Google Reviews":"गूगल रिव्यू"
 };
-var lang="en";try{lang=localStorage.getItem("nh_lang")==="hi"?"hi":"en"}catch(e){}
+var lang="hi";try{lang=localStorage.getItem("nh_lang")==="en"?"en":"hi"}catch(e){}   // Hindi unless the visitor chose English
 function T(s){return lang==="hi"&&HI[s]?HI[s]:s}
 window.T=T;window.NH_LANG=function(){return lang};
 // static text: elements marked data-i (text) or data-ip (placeholder); the English text is remembered in the page
