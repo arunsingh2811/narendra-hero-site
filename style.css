@@ -185,3 +185,16 @@ header .hr{flex:none}header .btn-red{white-space:nowrap}
 @media(max-width:760px){.langbtn span{padding:5px 7px;font-size:11.5px}.langbox{gap:2px}.langbox .lgl{font-size:9px;white-space:normal;text-align:center;max-width:84px;line-height:1.15}header .brand2 .logo{height:28px}header .brand2{gap:8px}header .brand2 #brandLogo{padding-right:8px}header .bname{font-size:15px;letter-spacing:.2px}header .hr{gap:6px}}
 
 @media(max-width:380px){header .bname{font-size:13px}header .brand2 .logo{height:24px}.langbtn span{padding:5px 6px;font-size:11px}.langbox .lgl{max-width:74px}}
+/* hero: phone number right after the dealer line; Call, WhatsApp and every social button together in the next line */
+.hero .tagrow.first{display:block;margin:0}
+.hero .tagrow.first p{display:inline}
+.hero .tagrow.first .ph{display:inline-block;margin-left:6px;white-space:nowrap;vertical-align:baseline}
+.hero .tagrow.links{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0;align-items:center}
+.hero .tagrow.links .tagrow.social{display:contents}
+.hero .tagrow.links .tagrow.social[hidden]{display:none}
+.hero .tagrow.links .btn{padding:7px 14px;font-size:14px;white-space:nowrap;flex:0 0 auto}
+@media(max-width:560px){.hero .tagrow.links{flex-wrap:nowrap;gap:5px}.hero .tagrow.links .btn{padding:7px 9px;font-size:12.5px}}
+@media(max-width:360px){.hero .tagrow.links{gap:4px}.hero .tagrow.links .btn{padding:6px 7px;font-size:11.5px}}
+/* promo reels on a phone: two cards per row, the next ones go below (nothing hides on the right) */
+@media(max-width:760px){.reels .rrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;overflow:visible;scroll-snap-type:none}.reels .rcard{flex:none;min-width:0}}
+
