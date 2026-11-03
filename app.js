@@ -139,10 +139,10 @@ var REELS=[];
 function drawReels(){
   var box=$("reels"),h="";
   var P=[["fb_url","Facebook"],["ig_url","Instagram"],["yt_url","YouTube"]];
-  REELS.forEach(function(r){var img=r.images&&r.images[0],links=[],first="";
-    P.forEach(function(p){var u=String(r[p[0]]||"").trim();if(/^https?:\/\//i.test(u)){if(!first)first=u;links.push('<a class="rl" target="_blank" rel="noopener noreferrer" href="'+esc(u)+'">'+p[1]+'</a>')}});
+  REELS.forEach(function(r){var img=r.images&&r.images[0],links=[],first="",names=[];
+    P.forEach(function(p){var u=String(r[p[0]]||"").trim();if(/^https?:\/\//i.test(u)){if(!first)first=u;names.push(p[1]);links.push('<a class="rl" target="_blank" rel="noopener noreferrer" href="'+esc(u)+'">'+p[1]+'</a>')}});
     if(!img||!first)return;
-    h+='<div class="rcard"><a class="rpic" target="_blank" rel="noopener noreferrer" href="'+esc(first)+'" aria-label="'+esc(r.title||"Watch")+'"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(r.title||"")+'"><span class="rplay" aria-hidden="true"></span></a><div class="rt">'+esc(r.title||"")+'</div><div class="rls"><span>'+T("Watch on")+'</span>'+links.join("")+'</div></div>'});
+    h+='<div class="rcard"><a class="rpic" target="_blank" rel="noopener noreferrer" href="'+esc(first)+'" aria-label="'+esc(r.title||"Watch")+'"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(r.title||"")+'"><span class="rplay" aria-hidden="true"></span>'+(names.length===1?'<span class="rtag rtag-'+names[0].toLowerCase()+'">'+names[0]+'</span>':'')+'</a><div class="rt">'+esc(r.title||"")+'</div><div class="rls"><span>'+T("Watch on")+'</span>'+links.join("")+'</div></div>'});
   box.innerHTML=h?'<div class="rhead">'+T("Latest offer reels - tap to watch")+'</div><div class="rrow">'+h+'</div>':"";box.hidden=!h}
 // ---- social media buttons under the phone / Call / WhatsApp line (links are set in Admin > Social Links)
 var SOCIAL=[];

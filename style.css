@@ -172,3 +172,10 @@ header .hr{flex:none}header .btn-red{white-space:nowrap}
 .reels .rl{background:#dff0fc;border:1px solid #a9d3f0;color:#0b4a73;border-radius:999px;padding:4px 10px;font-weight:600;text-decoration:none;font-size:12px}
 .reels .rl:hover{background:#cde7f9}
 @media(min-width:761px){.reels .rcard{flex-basis:190px}}
+/* promo reels: full-width row under the buttons; platform tag on a card that has one link */
+.hero .wrap>.reels{flex:0 0 100%;margin:8px 0 0}
+.reels .rt{color:#111}
+.reels .rtag{position:absolute;left:8px;top:8px;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;color:#fff;background:#333}
+.reels .rtag-facebook{background:#1877f2}.reels .rtag-instagram{background:#c13584}.reels .rtag-youtube{background:#e00}
+@media(min-width:761px){.reels .rrow{gap:16px}}
+

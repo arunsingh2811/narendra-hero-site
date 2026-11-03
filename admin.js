@@ -71,8 +71,8 @@ var BIKES={table:"bikes",order:"sort.asc,name.asc",label:"bike",add:"+ Add new b
  sub:function(r){return [r.type,r.cc?r.cc+" cc":"",r.price||"no price"].filter(Boolean).join(" | ")},
  flag:function(r){return r.active?"":'<span class="chipx off">Hidden</span>'},
  toggle:function(r){return r.active?{l:"Hide",p:{active:false}}:{l:"Show",p:{active:true}}}};
-var PROMOC={table:"promo_reels",order:"sort.asc,id.asc",label:"promo reel",add:"+ Add promo reel",titleKey:"title",minPhotos:1,maxPhotos:1,
- fields:[{k:"title",l:"Title *",req:1,ph:"Matra Rs 5,999 down payment me bike",full:1},{k:"fb_url",l:"Facebook reel link",ph:"https://www.facebook.com/reel/...",full:1},{k:"ig_url",l:"Instagram reel link",ph:"https://www.instagram.com/reel/...",full:1},{k:"yt_url",l:"YouTube link",ph:"https://youtube.com/shorts/...",full:1},{k:"sort",l:"Order (small number shows first)",t:"number",ph:"100"}],
+var PROMOC={table:"promo_reels",order:"sort.asc,id.asc",label:"promo reel",add:"+ Add promo reel",hint:"To promote 3 different videos together, add 3 promo reels: one with only the Facebook link, one with only the Instagram link, one with only the YouTube link. Each shows its own picture, title and platform name on the home page (up to 6).",titleKey:"title",minPhotos:1,maxPhotos:1,
+ fields:[{k:"title",l:"Title *",req:1,ph:"Matra Rs 5,999 down payment me bike",full:1},{k:"fb_url",l:"Facebook video link (leave empty if this promo is not for Facebook)",ph:"https://www.facebook.com/reel/...",full:1},{k:"ig_url",l:"Instagram video link (leave empty if this promo is not for Instagram)",ph:"https://www.instagram.com/reel/...",full:1},{k:"yt_url",l:"YouTube video link (leave empty if this promo is not for YouTube)",ph:"https://youtube.com/shorts/...",full:1},{k:"sort",l:"Order (small number shows first)",t:"number",ph:"100"}],
  beforeSave:function(d){var any=false;["fb_url","ig_url","yt_url"].forEach(function(k){var u=String(d[k]||"").trim();d[k]=u});
   var bad=["fb_url","ig_url","yt_url"].filter(function(k){return d[k]&&!/^https?:\/\/[^\s]+$/i.test(d[k])});if(bad.length)return "Links must start with https://";
   if(!d.fb_url&&!d.ig_url&&!d.yt_url)return "Please paste at least one reel link (Facebook, Instagram or YouTube).";
@@ -89,7 +89,7 @@ var USEDC={table:"used_bikes",order:"created_at.desc",label:"used bike",add:"+ A
  toggle:function(r){return r.status==="available"?{l:"Mark sold",p:{status:"sold"}}:{l:"Make available",p:{status:"available"}}}};
 function crud(pane,C){
   return rest("GET",C.table+"?select=*&order="+C.order).then(function(rows){
-    pane.innerHTML='<p><button class="btn btn-red" id="add" type="button">'+C.add+'</button></p><div id="list"></div>';
+    pane.innerHTML=(C.hint?'<p class="hint">'+C.hint+'</p>':'')+'<p><button class="btn btn-red" id="add" type="button">'+C.add+'</button></p><div id="list"></div>';
     var L=$("#list",pane);
     L.innerHTML=rows.length?rows.map(function(r,i){var t=toggle(r);return '<div class="row"><div class="th">'+(r.images&&r.images[0]?'<img class="th" src="'+esc(r.images[0])+'" alt="">':'No photo')+'</div><div class="info"><b>'+esc(r[C.titleKey])+C.flag(r)+'</b><small>'+esc(C.sub(r))+' | '+(r.images||[]).length+' photo(s)</small></div><div class="acts"><button class="btn btn-line sm" data-a="edit" data-i="'+i+'" type="button">Edit</button><button class="btn btn-line sm" data-a="tog" data-i="'+i+'" type="button">'+t.l+'</button><button class="btn btn-line sm" data-a="del" data-i="'+i+'" type="button">Delete</button></div></div>'}).join(""):'<p class="hint">Nothing here yet. Press the button above to add.</p>';
     function toggle(r){return C.toggle(r)}
