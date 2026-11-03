@@ -198,3 +198,5 @@ header .hr{flex:none}header .btn-red{white-space:nowrap}
 /* promo reels on a phone: two cards per row, the next ones go below (nothing hides on the right) */
 @media(max-width:760px){.reels .rrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;overflow:visible;scroll-snap-type:none}.reels .rcard{flex:none;min-width:0}}
 
+/* no platform name on the reel pictures */
+.reels .rtag{display:none!important}
