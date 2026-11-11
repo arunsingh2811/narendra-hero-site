@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded",function(){var b=document.getElemen
 var S=window.SITE,$=function(i){return document.getElementById(i)};
 var T=window.T||function(s){return s};
 // defaults for the staff shortcut and visitor counter (config.js can override any of these)
-var DEF={adminLink:"admin.html",countVisits:true,showVisitors:true};
+var DEF={staffLink:"https://www.bizbale.com/x/7d9kQ2pLm8R4",adminLink:"admin.html",countVisits:true,showVisitors:true};
 Object.keys(DEF).forEach(function(k){if(S[k]===undefined)S[k]=DEF[k]});
 var API=(S.supabaseUrl||"").replace(/\/$/,""),KEY=S.supabaseKey||"",USE_DB=!!(API&&KEY);
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
@@ -85,6 +85,15 @@ $("addr").textContent=S.address;$("hrs").textContent=S.hours;
 $("telA").textContent=S.phone;$("telA").href="tel:+91"+S.phone;if(S.email){$("mailA").textContent=S.email;$("mailA").href="mailto:"+S.email}else{$("mailP").style.display="none"}
 $("yr").textContent=new Date().getFullYear();$("fname").textContent=S.fullName+" ("+S.name+")";
 function goNew(u){var w=null;try{w=window.open(u,"_blank")}catch(e){}if(!w)location.href=u}
+// ---- hidden staff shortcut: tap the Hero logo in the footer 5 times (each tap within 1.5 sec of the last) -> BizBale staff login
+(function(){
+  var n=0,last=0;
+  $("flogo").addEventListener("click",function(e){
+    if(!S.staffLink||!e.target||e.target.tagName!=="IMG")return;
+    var now=Date.now();n=now-last>1500?1:n+1;last=now;
+    if(n>=5){n=0;try{localStorage.setItem("nh_staff","1")}catch(x){}goNew(S.staffLink)}
+  });
+})();
 // ---- hidden admin shortcut: tap the "Website visitors" line (or the copyright line) in the footer 5 times (each tap within 1.5 sec of the last) -> this site's staff admin login
 (function(){
   var n=0,last=0;
